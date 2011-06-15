@@ -1,0 +1,71 @@
+table.displaytag{
+	width: 90%;
+	border: 2px solid #FFE87C;
+	margin: 1em 0px 1em 0px;
+	border-collapse: collapse;
+	margin-left: auto;
+    margin-right: auto;
+    font-size: 12px;
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
+table.displaytag td,table.displaytag th {
+    border: 1px solid #FFE87C; 
+    padding: 1px;
+    text-decoration: none;
+}
+
+table.displaytag th {
+    background-color: #FFE87C;
+    color: #FFFFFF;
+    padding: 3px;
+    text-align: left;
+    text-decoration: none;
+    font-family: Verdana;
+    font-size: 14px;
+}
+
+table.displaytag td {
+    padding: 5px;
+    text-align: left;
+    font-size: 12px;
+    font-family: Verdana;
+}
+
+table.displaytag th.sortable {
+    background-image: url(img/arrow_off.png);
+    background-repeat: no-repeat;	
+    background-position: right center;
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 12px;
+    font-family: Verdana;
+}
+
+table.displaytag th.order1 {
+    background-image: url(img/arrow_up.png);
+    color: #FFFFFF;
+}
+
+table.displaytag th.order2 {
+    background-image: url(img/arrow_down.png);
+    color: #FFFFFF;
+}
+
+table.displaytag tr.impar {
+    background-color: #FFFBE6;
+}
+
+table.displaytag tr.par {
+	background-color: #FFF7CC;
+}
+
+table.displaytag tbody tr.hover {
+	background-color: #FFFFFF;
+	cursor: pointer;
+}
+
+.pagebanner, .pagelinks{
+	font-size: 12px;
+}
+

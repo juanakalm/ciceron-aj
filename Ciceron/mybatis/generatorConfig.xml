@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+	<context id="Ciceron" targetRuntime="MyBatis3">
+	    <plugin type="es.ise.ciceron.mybatis.AnnotatedMappedPlugin"/>
+	    
+	    <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
+			            connectionURL="jdbc:oracle:thin:@oracled01:1521:desa1"
+			            userId="contratos" password="contratos">
+		</jdbcConnection>
+        
+		<javaModelGenerator targetPackage="es.ise.ciceron.model"
+			targetProject="src">
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<sqlMapGenerator targetPackage="es.ise.ciceron.mapper"
+			targetProject="src">
+		</sqlMapGenerator>
+
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="es.ise.ciceron.mapper" targetProject="src">
+		</javaClientGenerator>
+		
+		<table tableName="AJ_MENUS" domainObjectName="Menu">
+               <generatedKey column="M_ID" sqlStatement="SELECT AJ_MENUS_S1.nextval FROM DUAL" identity="false" type="pre"/>
+               <columnRenamingRule searchString="^M_" replaceString="" />
+        </table>
+        
+        <table tableName="AJ_OPCIONES_MENUS" domainObjectName="OpcionMenu">
+               <generatedKey column="OM_ID" sqlStatement="SELECT AJ_OPCIONES_MENUS_S1.nextval FROM DUAL" identity="false" type="pre"/>
+               <columnRenamingRule searchString="^OM_" replaceString="" />
+               <columnOverride column="OM_M_ID" property="idMenu"/>
+               <columnOverride column="OM_US_ID" property="idUsuario"/>
+        </table>
+        
+        <table tableName="AJ_USUARIOS_V" domainObjectName="Usuario"
+               enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               enableInsert="false" enableUpdateByExample="false"
+               enableUpdateByPrimaryKey="false">
+        </table>
+        
+        <table tableName="AJ_MENUS_USUARIO_V" domainObjectName="MenusUsuario"
+               enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               enableInsert="false" enableUpdateByExample="false"
+               enableUpdateByPrimaryKey="false">
+        </table>
+        
+        <table tableName="AJ_TIPOLOGIA_INFORMES" domainObjectName="Tipologia">
+               <generatedKey column="TI_ID" sqlStatement="SELECT AJ_TIPOLOGIA_INFORMES_S1.nextval FROM DUAL" identity="false" type="pre"/>
+               <columnRenamingRule searchString="^TI_" replaceString="" />
+        </table>
+        
+        <table tableName="AJ_BLOQUES" domainObjectName="Bloque">
+               <generatedKey column="B_ID" sqlStatement="SELECT AJ_BLOQUES_S1.nextval FROM DUAL" identity="false" type="pre"/>
+               <columnRenamingRule searchString="^B_" replaceString="" />
+        		<columnOverride column="B_TI_ID" property="idTipologia"/>
+        </table>
+        
+        <table tableName="AJ_PUNTOS" domainObjectName="Punto">
+               <generatedKey column="P_ID" sqlStatement="SELECT AJ_PUNTOS_S1.nextval FROM DUAL" identity="false" type="pre"/>
+               <columnRenamingRule searchString="^P_" replaceString="" />
+        	   <columnOverride column="P_B_ID" property="idBloque"/>
+        </table>
+        
+        <table tableName="AJ_TIPOBLOQUEPUNTOS_V" domainObjectName="TipoBloquePuntos"
+               enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               enableInsert="false" enableUpdateByExample="false"
+               enableUpdateByPrimaryKey="false">
+        </table>
+        
+        <table tableName="INFORME_AJ_V" domainObjectName="InformeJuridico"
+        	enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+            enableInsert="false" enableUpdateByExample="false"
+            enableUpdateByPrimaryKey="false">
+        	<columnOverride column="EXP_ID" property="idExpediente"/>
+        	<columnOverride column="EXP_CODIGO" property="codigoExpediente"/>
+        	<columnOverride column="EXP_DESCRIPCION" property="descripcionExpediente"/>
+        	<columnOverride column="EXP_PRESUPUESTO_TOTAL" property="presupuestoTotalExpediente"/>
+        	<columnOverride column="EXP_F_AUT_GASTO" property="fechaAutorizacionGastoExpediente"/>
+        	<columnOverride column="EXP_UC_ID" property="idUnidadContratacion"/>
+        	<columnOverride column="EXP_SECUENCIA" property="secuenciaExpediente"/>
+        	<columnOverride column="EXP_NAT_ID" property="idNaturaleza"/>
+        	<columnOverride column="EXP_AÑO" property="añoExpediente"/>
+        	<columnOverride column="EXP_TS_ID" property="idTipoServicio"/>
+        	<columnOverride column="EXP_EST_ID" property="idEstado"/>
+        	<columnOverride column="CON_ID" property="idContrato"/>
+        	<columnOverride column="F_CREACION" property="fechaCreacion"/>
+        	<columnOverride column="UC_ACR" property="acronimoUnidadContratacion"/>
+        	<columnOverride column="TIPO" property="tipo"/>
+        </table>
+        
+        <table tableName="INFORME_AJ_MOD_V" domainObjectName="InformeJuridicoModificado"
+        	enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+            enableInsert="false" enableUpdateByExample="false"
+            enableUpdateByPrimaryKey="false">
+        	<columnOverride column="EXP_ID" property="idExpediente"/>
+        	<columnOverride column="EXP_CODIGO" property="codigoExpediente"/>
+        	<columnOverride column="CON_DESCRIPCION" property="descripcionContrato"/>
+        	<columnOverride column="CON_PRESUPUESTO_TOTAL" property="presupuestoTotalContrato"/>
+        	<columnOverride column="EXP_F_AUT_GASTO" property="fechaAutorizacionGastoExpediente"/>
+        	<columnOverride column="PROVEEDOR" property="proveedor"/>
+        	<columnOverride column="EXP_UC_ID" property="idUnidadContratacion"/>
+        	<columnOverride column="EXP_SECUENCIA" property="secuenciaExpediente"/>
+        	<columnOverride column="EXP_NAT_ID" property="idNaturaleza"/>
+        	<columnOverride column="EXP_AÑO" property="añoExpediente"/>
+        	<columnOverride column="EXP_TS_ID" property="idTipoServicio"/>
+        	<columnOverride column="EXP_EST_ID" property="idEstado"/>
+        	<columnOverride column="CON_ID" property="idContrato"/>
+        	<columnOverride column="F_CREACION" property="fechaCreacion"/>
+        	<columnOverride column="UC_ACR" property="acronimoUnidadContratacion"/>
+        	<columnOverride column="TIPO" property="tipo"/>
+        </table>
+        
+        <table tableName="UNIDADES_CONTRATACION" domainObjectName="UnidadesContratacion">
+               <generatedKey column="UC_ID" sqlStatement="SELECT UNIDADES_CONTRATACION_S1.nextval FROM DUAL" identity="false" type="pre"/>
+               <columnRenamingRule searchString="^UC_" replaceString="" />
+        	   <columnOverride column="UC_PIE_FIRMA" property="pieFirma"/>
+        	   <columnOverride column="UC_ACR" property="acronimo"/>
+        	   <columnOverride column="ACR_TRECE" property="acronimoTrece"/>
+        	   <columnOverride column="UC_UO_ID" property="idUnidadOrganizativa"/>
+        </table>
+        
+        <table tableName="ACCESOS_CONTRATOS" domainObjectName="AccesoContratos">
+               <generatedKey column="ACC_ID" sqlStatement="SELECT CONTRATOS.ACCESOS_CONTRATOS_S1.nextval FROM DUAL" identity="false" type="pre"/>
+               <columnRenamingRule searchString="^ACC_" replaceString="" />
+               <columnOverride column="ACC_FECHA_CADUCIDAD" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        </table>
+        
+         <table tableName="AJ_TEXTO_INFORME" domainObjectName="TextoInforme">
+               <generatedKey column="TEI_ID" sqlStatement="SELECT AJ_TEXTO_INFORME_S1.nextval FROM DUAL" identity="false" type="pre"/>
+               <columnRenamingRule searchString="^TEI_" replaceString="" />
+        		<columnOverride column="TEI_P_ID" property="idPunto"/>
+        		<columnOverride column="TEI_P_DESCRIPCION" property="descripcionPunto"/>
+ 				<columnOverride column="TEI_P_ORDEN" property="ordenPunto"/>
+        		<columnOverride column="TEI_INF_ID" property="idInforme"/>
+        </table>
+        
+         <table tableName="AJ_PUNTOSEDITADOS_V" domainObjectName="PuntosEditados"
+               enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               enableInsert="false" enableUpdateByExample="false"
+               enableUpdateByPrimaryKey="false">
+        </table>
+        
+        <table tableName="AJ_TIPOS_DOCUMENTOS" domainObjectName="TiposDocumentos">
+               <generatedKey column="TD_ID" sqlStatement="SELECT CONTRATOS.AJ_TIPOS_DOCUMENTOS_S1.nextval FROM DUAL" identity="false" type="pre"/>
+               <columnRenamingRule searchString="^TD_" replaceString="" />
+        </table>
+        
+        <table tableName="AJ_DOCUMENTOS" domainObjectName="Documentos">
+               <generatedKey column="DOC_ID" sqlStatement="SELECT AJ_DOCUMENTOS_S1.nextval FROM DUAL" identity="false" type="pre"/>
+               <columnRenamingRule searchString="^DOC_" replaceString="" />
+        		<columnOverride column="DOC_TD_ID" property="idTiposDocumentos"/>
+        </table>
+        
+        <table tableName="AJ_INFORME" domainObjectName="Informe">
+               <generatedKey column="INF_ID" sqlStatement="SELECT AJ_INFORME_S1.nextval FROM DUAL" identity="false" type="pre"/>
+               <columnRenamingRule searchString="^INF_" replaceString="" />
+        		<columnOverride column="INF_DOC_ID" property="idDocumento"/>
+        		<columnOverride column="INF_EXP_ID" property="idExpediente"/>
+        </table>
+        
+	</context>
+</generatorConfiguration>
