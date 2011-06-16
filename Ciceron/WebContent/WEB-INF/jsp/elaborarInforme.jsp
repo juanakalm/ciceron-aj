@@ -7,6 +7,7 @@
 		$(document).ready(function() {
 			
 			$('#sustituirInforme').hide();
+			$('#enviarInforme').hide();
 			
 			$('.tabla_busqueda .tipologia').change(function() {
 				if($(this).val() != '') {
@@ -117,7 +118,7 @@
 				$(this).click(function() {
 					var id = $(this).attr('id').split('_')[1];
 					if (confirm('¿Desea realmente eliminar este bloque y todos sus puntos?')) {
-						location.href = '<spring:url value = "/app/informes/elaborarInforme/eliminar/"/>'+id;
+						location.href = '<spring:url value = "/app/informes/elaborarInforme/eliminarLineaInforme/"/>'+id;
 					}
 				});
 			});
@@ -162,9 +163,9 @@
 					title : 'Ver documento'
 			});
 				$(this).click(function(){
+					$('.formularioOculto').hide();
 					var url = '<spring:url value="/app/informes/elaborarInforme/visualizar/${informe.idDocumento}/"/>';
 					showPdf(url);
-					alert(url);
 				});
 			});
 			
@@ -174,6 +175,7 @@
 					title : 'Sustituir documento'
 				});
 				$(this).click(function(){
+					$('.formularioOculto').hide();
 					$('#sustituirInforme').show();
 				});
 			});
@@ -184,7 +186,21 @@
 					title : 'Enviar a Portafirma'
 				});
 				$(this).click(function(){
-					
+					$('.formularioOculto').hide();
+					$('#enviarInforme').show();
+				});
+			});
+			
+			$('#eliminar').each(function(){
+				$(this).css('cursor','pointer');
+				$(this).attr({
+					title : 'Eliminar informe'
+				});
+				$(this).click(function() {
+					if (confirm('¿Desea realmente eliminar este Informe?')) {
+						var url = '<spring:url value = "/app/informes/elaborarInforme/eliminar/${informe.id}/"/>';
+						location.href = url;
+					}
 				});
 			});
 			
@@ -365,8 +381,9 @@
 				</tbody>
 			</table>
 		</div>
+		
  <!-- Sustuir informe -->
-        <div id="sustituirInforme" title="Sustituir Informe" >
+        <div id="sustituirInforme" title="Sustituir Informe" class="formularioOculto">
              <form action="${context}/informes/elaborarInforme/sustituir/${informe.id}" method="post" enctype="multipart/form-data">
                 <table style="border: 0px;">
                     <tbody>
@@ -380,17 +397,33 @@
                             	<img class="guardar"/>
                             </td>
                         </tr>
-                        <tr>
-		 					<td align="center" colspan="4" style="color:red">
-			 					<c:if test="${not empty mensaje}">
-			 						<c:out value="${mensaje}"/>
-			 					</c:if>
-			 				</td>
-		 				</tr>
                     </tbody>
                  </table>
              </form>
              <br/>
         </div>
+        
+ <!-- Enviar informe a portafirma -->
+ 		<div id="enviarInforme" title="Enviar informe" class="formularioOculto">
+ 			<form action="${contex}/informes/elaborarInforme/enviar/${informe.id}" method="post" enctype="multipart/form-data">
+ 				<table>
+ 					<tr>
+ 						<td>Firmante</td>
+ 						<td>
+ 							<select name="firmante" >
+ 							
+ 				<!-- Crear el selec con los nombres de los firmantes -->				
+ 							
+ 							</select>
+ 						</td>
+ 						<td width="15px">&nbsp;</td>
+                        <td>
+                        	<img class="guardar"/>
+                        </td>
+ 					</tr>
+ 				</table>
+ 			</form>
+ 		</div>
+ 
 	</body>
 </html>
