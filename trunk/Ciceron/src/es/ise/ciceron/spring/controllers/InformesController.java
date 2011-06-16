@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +38,7 @@ import es.ise.ciceron.model.Usuario;
 import es.ise.ciceron.spring.annotations.SessionParam;
 import es.ise.ciceron.spring.command.BusquedaInforme;
 import es.ise.ciceron.spring.repositories.GenericDAO;
+import es.ise.ciceron.spring.services.PortafirmaService;
 import es.ise.ciceron.spring.services.ProceduresService;
 import es.ise.ciceron.spring.services.ReportService;
 import es.ise.ciceron.spring.util.Fichero;
@@ -53,6 +55,9 @@ public class InformesController {
 	
 	@Autowired
 	private ProceduresService proceduresService;
+
+	@Autowired
+	private PortafirmaService portafirmaService;
 	
 	@ModelAttribute("busqueda")
 	public BusquedaInforme getBusquedaInforme(){
@@ -152,7 +157,7 @@ public class InformesController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/elaborarInforme/eliminar/{idTextoInforme}", method=RequestMethod.GET)
+	@RequestMapping(value="/elaborarInforme/eliminarLineaInforme/{idTextoInforme}", method=RequestMethod.GET)
 	public ModelAndView eliminarPunto(@PathVariable BigDecimal idTextoInforme)
 	{
 		TextoInforme textoInforme = genericDAO.get(TextoInforme.class, idTextoInforme);
@@ -215,6 +220,33 @@ public class InformesController {
 		{
 			mav.addObject("mensaje", "Seleccione un fichero .pdf");
 		}
+		return mav;
+	}
+	
+	@RequestMapping(value="/elaborarInforme/eliminar/{idInforme}", method=RequestMethod.GET)
+	public ModelAndView eliminarInforme (@PathVariable BigDecimal idInforme, @SessionParam Usuario usuario)
+	{
+		Informe informe = genericDAO.get(Informe.class, idInforme);
+		BigDecimal idDocumento = informe.getIdDocumento();
+		ModelAndView mav = new ModelAndView("redirect:/app/informes/elaborarInforme/"+informe.getIdExpediente());
+		informe.setIdDocumento(null);
+		informe.setActualizacion(new Date(), usuario);
+		genericDAO.insertOrUpdate(Informe.class, informe);
+		genericDAO.delete(Documentos.class, idDocumento);
+		return mav;
+	}
+	
+	@RequestMapping(value="/elaborarInforme/enviar/{idInforme}", method=RequestMethod.GET)
+	public ModelAndView enviarInforme(@PathVariable BigDecimal idInforme, @RequestParam String firmante,@SessionParam Usuario usuario)
+	{
+		Informe informe = genericDAO.get(Informe.class, idInforme);
+		ModelAndView mav = new ModelAndView("redirect:/app/informes/elaborarInforme/"+informe.getIdExpediente());
+		Documentos doc = genericDAO.getWithBlob(Documentos.class, informe.getIdDocumento());
+		String asunto = String.format("Informe del espediente %d", informe.getIdExpediente());
+		portafirmaService.enviarDocumentoAPortafirma(doc, asunto, usuario, firmante);
+		doc.setFechaEnvio(new Date());
+		doc.setActualizacion(new Date(), usuario);
+		genericDAO.insertOrUpdate(Documentos.class, doc);
 		return mav;
 	}
 }
