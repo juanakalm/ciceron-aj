@@ -1,8 +1,6 @@
 package es.ise.ciceron.spring.controllers;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +23,8 @@ import org.xml.sax.SAXException;
 
 import es.ise.ciceron.model.AccesoContratos;
 import es.ise.ciceron.model.Documentos;
+import es.ise.ciceron.model.Expedientes;
+import es.ise.ciceron.model.FirmantesInformes;
 import es.ise.ciceron.model.Informe;
 import es.ise.ciceron.model.InformeJuridico;
 import es.ise.ciceron.model.InformeJuridicoModificado;
@@ -122,7 +121,7 @@ public class InformesController {
 	public ModelAndView elaborarInforme(@PathVariable BigDecimal idExpediente, @SessionParam Usuario usuario)
 	{
 		ModelAndView mav = new ModelAndView("elaborarInforme");
-		
+		Expedientes expediente = genericDAO.get(Expedientes.class, idExpediente);
 		Informe informe = genericDAO.select(Informe.class, "idExpediente", idExpediente);
 		if(informe == null)
 		{
@@ -131,7 +130,7 @@ public class InformesController {
 			informe.setIdExpediente(idExpediente);
 			genericDAO.insert(informe);
 		}
-		
+		mav.addObject("firmantes", genericDAO.list(FirmantesInformes.class,"idUnidadContracion",expediente.getExpUcId()));
 		mav.addObject("estado", proceduresService.estadoInforme(informe.getId()));
 		mav.addObject("tipologias", genericDAO.list(Tipologia.class));
 		mav.addObject("listaPuntosInforme",genericDAO.list(PuntosEditados.class, "idInforme", informe.getId()));
@@ -170,8 +169,8 @@ public class InformesController {
 	@RequestMapping("/elaborarInforme/generarBorrador/{idInforme}")
 	public void generarBorrador(@PathVariable BigDecimal idInforme, HttpServletResponse response) throws IOException, SAXException
 	{
-		TiposDocumentos report = genericDAO.select(TiposDocumentos.class, "codigo", "INFORME");
-		reportService.sendPdfToBrowser(reportService.getReport(report.getReport(), "P_INF_ID", idInforme.toString()), response);
+//		TiposDocumentos report = genericDAO.get(TiposDocumentos.class, new BigDecimal(7));
+		reportService.sendPdfToBrowser(reportService.getReport("AJ_INFORME", "P_INF_ID", idInforme.toString()), response);
 	}
 	
 	@RequestMapping(value="/elaborarInforme/generarReport/{idInforme}")
@@ -180,11 +179,10 @@ public class InformesController {
 		Informe informe = genericDAO.get(Informe.class, idInforme);
 		ModelAndView mav = new ModelAndView("redirect:/app/informes/elaborarInforme/"+informe.getIdExpediente());
 		
-		TiposDocumentos report = genericDAO.select(TiposDocumentos.class, "codigo", "INFORME");
 		Documentos doc = new Documentos();
-		doc.setIdTiposDocumentos(report.getId());
-		doc.setFichero(reportService.getReport(report.getReport(), "P_INF_ID", idInforme.toString()));
-		doc.setNombreFichero(String.format("%s_%s", report.getCodigo().toLowerCase(), informe.getId()));
+		doc.setIdTipoDocumento(new BigDecimal(7));
+		doc.setFichero(reportService.getReport("AJ_INFORME", "P_INF_ID", idInforme.toString()));
+		doc.setNombreFichero(String.format("Informe_%s", informe.getIdExpediente()));
 		doc.setExtension("pdf");
 		doc.setCreacion(new Date(), usuario);
 		genericDAO.insert(doc);
@@ -236,13 +234,14 @@ public class InformesController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/elaborarInforme/enviar/{idInforme}", method=RequestMethod.GET)
+	@RequestMapping(value="/elaborarInforme/enviar/{idInforme}", method=RequestMethod.POST)
 	public ModelAndView enviarInforme(@PathVariable BigDecimal idInforme, @RequestParam String firmante,@SessionParam Usuario usuario)
 	{
 		Informe informe = genericDAO.get(Informe.class, idInforme);
+		Expedientes exp = genericDAO.get(Expedientes.class, informe.getIdExpediente());
 		ModelAndView mav = new ModelAndView("redirect:/app/informes/elaborarInforme/"+informe.getIdExpediente());
 		Documentos doc = genericDAO.getWithBlob(Documentos.class, informe.getIdDocumento());
-		String asunto = String.format("Informe del espediente %d", informe.getIdExpediente());
+		String asunto = String.format("Informe Asesoría Jurídica. Expediente %s", exp.getExpCodigo());
 		portafirmaService.enviarDocumentoAPortafirma(doc, asunto, usuario, firmante);
 		doc.setFechaEnvio(new Date());
 		doc.setActualizacion(new Date(), usuario);

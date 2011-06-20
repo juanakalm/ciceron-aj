@@ -139,21 +139,66 @@
         		<columnOverride column="TEI_INF_ID" property="idInforme"/>
         </table>
         
-         <table tableName="AJ_PUNTOSEDITADOS_V" domainObjectName="PuntosEditados"
+        <table tableName="AJ_PUNTOSEDITADOS_V" domainObjectName="PuntosEditados"
                enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
                enableInsert="false" enableUpdateByExample="false"
                enableUpdateByPrimaryKey="false">
         </table>
         
-        <table tableName="AJ_TIPOS_DOCUMENTOS" domainObjectName="TiposDocumentos">
-               <generatedKey column="TD_ID" sqlStatement="SELECT CONTRATOS.AJ_TIPOS_DOCUMENTOS_S1.nextval FROM DUAL" identity="false" type="pre"/>
-               <columnRenamingRule searchString="^TD_" replaceString="" />
+        <table tableName="ISE_TIPO_DOCUMENTOS" domainObjectName="TiposDocumentos">
+               <generatedKey column="TIP_ID" sqlStatement="SELECT ISE_TIPO_DOCUMENTOS_S1.nextval FROM DUAL" identity="false" type="pre"/>
+               <columnRenamingRule searchString="^TIP_" replaceString="" />
+               <columnOverride column="TIP_NOMBRE_DOCUMENTO" property="descripcion"/>
+               <ignoreColumn column="TIP_X_TRAMITE"/>
+               <ignoreColumn column="TIP_E_S"/>
+               <ignoreColumn column="TIP_TIPO_DOC"/>
+               <ignoreColumn column="TIP_FIRMANTE"/>
+               <ignoreColumn column="TIP_LOTE"/>
+               <ignoreColumn column="TIP_PLANTILLA"/>
+               <ignoreColumn column="TIP_EXTENSION"/>
+               <ignoreColumn column="TIP_NOMBRE_PLANTILLA"/>
+               <ignoreColumn column="TIP_REPORT_E"/>
+               <ignoreColumn column="TIP_U_CREACION"/>
+               <ignoreColumn column="TIP_U_ACTU"/>
+               <ignoreColumn column="TIP_F_ACTU"/>
+               <ignoreColumn column="TIP_F_CREACION"/>
+               <ignoreColumn column="TIP_USUARIO"/>
+               <ignoreColumn column="TIP_PD_ID"/>
         </table>
         
-        <table tableName="AJ_DOCUMENTOS" domainObjectName="Documentos">
-               <generatedKey column="DOC_ID" sqlStatement="SELECT AJ_DOCUMENTOS_S1.nextval FROM DUAL" identity="false" type="pre"/>
+        <table tableName="ISE_DOCUMENTOS" domainObjectName="Documentos">
+               <generatedKey column="DOC_X_DOCUMENTO" sqlStatement="SELECT ISE_DOCUMENTOS_S1.nextval FROM DUAL" identity="false" type="pre"/>
                <columnRenamingRule searchString="^DOC_" replaceString="" />
-        		<columnOverride column="DOC_TD_ID" property="idTiposDocumentos"/>
+        	   <columnOverride column="DOC_X_DOCUMENTO" property="id"/>
+        	   <columnOverride column="DOC_TD_ID" property="idTipoDocumento"/>
+        	   <ignoreColumn column="DOC_X_OPERACION"/>
+        	   <ignoreColumn column="DOC_X_CONTRATO"/>
+        	   <columnOverride column="DOC_X_EXPEDIENTE" property="idExpediente"/>
+        	   <ignoreColumn column="DOC_F_REGISTRO"/>
+        	   <ignoreColumn column="DOC_ID_ARIES"/>
+        	   <ignoreColumn column="DOC_ID"/>
+        	   <columnOverride column="CREADOR" property="uCreacion"/>
+        	   <columnOverride column="F_CREACION" property="fCreacion"/>
+        	   <columnOverride column="MODIFICADOR" property="uActu"/>
+        	   <columnOverride column="F_MODIFICACION" property="fActu"/>
+        	   <ignoreColumn column="DOC_TIPO_ORIGEN"/>
+        	   <columnOverride column="DOC_F_FIRMA" property="fechaFirma"/>
+        	   <columnOverride column="DOC_F_PORTAFIRMA" property="fechaEnvio"/>
+        	   <ignoreColumn column="DOC_F_ARIES"/>
+        	   <columnOverride column="DOC_D_DOCUMENTO" property="nombreFichero"/>
+        	   <ignoreColumn column="DOC_PRO_ID"/>
+        	   <ignoreColumn column="DOC_MOD_ID"/>
+        	   <ignoreColumn column="DOC_LIQ_ID"/>
+        	   <columnOverride column="DOC_PETHASH" property="hashPeticion"/>
+        	   <ignoreColumn column="DOC_HASH_1"/>
+        	   <ignoreColumn column="DOC_HASH_2"/>
+        	   <columnOverride column="DOC_F_DEVUELTO" property="fechaDevuelto"/>
+        	   <ignoreColumn column="DOC_OF_ID"/>
+        	   <ignoreColumn column="DOC_TS_CONFORM"/>
+        	   <ignoreColumn column="DOC_F_CONFORM"/>
+        	   <ignoreColumn column="DOC_F_CONFORM_AUX"/>
+        	   <ignoreColumn column="DOC_F_AVISO_CE"/>
+        	   <ignoreColumn column="DOC_TS_AVISO_CE"/>
         </table>
         
         <table tableName="AJ_INFORME" domainObjectName="Informe">
@@ -161,6 +206,18 @@
                <columnRenamingRule searchString="^INF_" replaceString="" />
         		<columnOverride column="INF_DOC_ID" property="idDocumento"/>
         		<columnOverride column="INF_EXP_ID" property="idExpediente"/>
+        </table>
+        
+        <table tableName="AJ_FIRMANTES_INFORMES_V" domainObjectName="FirmantesInformes"
+               enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               enableInsert="false" enableUpdateByExample="false"
+               enableUpdateByPrimaryKey="false">
+        </table>
+        
+        <table tableName="EXPEDIENTES" domainObjectName="Expedientes"
+               enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               enableInsert="false" enableUpdateByExample="false"
+               enableUpdateByPrimaryKey="false">
         </table>
         
 	</context>
