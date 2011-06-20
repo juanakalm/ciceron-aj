@@ -405,14 +405,18 @@
         
  <!-- Enviar informe a portafirma -->
  		<div id="enviarInforme" title="Enviar informe" class="formularioOculto">
- 			<form action="${contex}/informes/elaborarInforme/enviar/${informe.id}" method="post" enctype="multipart/form-data">
+ 			<form action="${context}/informes/elaborarInforme/enviar/${informe.id}" method="post" >
  				<table>
  					<tr>
  						<td>Firmante</td>
  						<td>
  							<select name="firmante" >
- 							
  				<!-- Crear el selec con los nombres de los firmantes -->				
+ 								<option value="">-- Seleccione firmante</option>
+								<c:forEach var="firmante" items="${firmantes}">
+								<option value="${firmante.dni}">${firmante.nombre}</option>
+								</c:forEach>
+ 							
  							
  							</select>
  						</td>

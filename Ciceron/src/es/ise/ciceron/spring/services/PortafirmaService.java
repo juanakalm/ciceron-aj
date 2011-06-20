@@ -12,13 +12,16 @@ import javax.xml.rpc.ServiceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import es.ise.ciceron.model.Documentos;
 import es.ise.ciceron.model.Usuario;
+import es.ise.ciceron.spring.repositories.GenericDAO;
 import es.ise.portafirma.ws.EntregaWS;
 import es.ise.portafirma.ws.client.PfServicioWS;
 import es.ise.portafirma.ws.client.PfServicioWSServiceLocator;
 
+@Service
 public class PortafirmaService
 {
 	private PfServicioWS servicio = null;
@@ -26,6 +29,9 @@ public class PortafirmaService
 	private int diasParaFirmar = 15;
 	private BigDecimal prioridad = new BigDecimal(3);
 	private String urlInforme = "";
+	
+	@Autowired
+	private GenericDAO genericDAO;
 
 	
 	@Autowired
@@ -48,7 +54,7 @@ public class PortafirmaService
 			{
 				servicio.insertarDestinatarioPeticion(destinatario, doc.getHashPeticion());
 			}
-			doc.setHashPeticion(servicio.insertarDocumentoPeticion(doc.getHashPeticion(), "GENERICO", String.format("%s.%s", doc.getNombreFichero(),doc.getExtension()), "application/pdf", doc.getFichero()));
+			doc.setDochash(servicio.insertarDocumentoPeticion(doc.getHashPeticion(), "GENERICO", String.format("%s.%s", doc.getNombreFichero(),doc.getExtension()), "application/pdf", doc.getFichero()));
 			
 			Calendar fechaCaducidad = Calendar.getInstance();
 			fechaCaducidad.add(Calendar.DATE, diasParaFirmar);
@@ -64,7 +70,7 @@ public class PortafirmaService
 					asunto);
 			
 			if(error !=0)
-				throw new IllegalArgumentException("Error actualizando la petición de Port@firma.");
+				throw new IllegalArgumentException(String.format("Error actualizando la petición de Port@firma (error %d).", error));
 			
 			error = servicio.entregarPeticion(doc.getHashPeticion());
 			
@@ -77,24 +83,32 @@ public class PortafirmaService
 		}
 	}
 	
-//	public boolean comprobarEstado(Documentos doc) throws RemoteException
-//	{
-//		boolean modified = false;
-//		EntregaWS[] entregas = servicio.consultarEntregasPeticion(doc.getHashPeticion());
-//		for(EntregaWS entrega: entregas)
-//		{
-//			if(entrega.getDOCCHASH().equals(doc.getDochash()))
-//			{
-//				String dni = entrega.getDESTCDNI();
-//				if(entrega.getCESTADO().equals("DEVUELTO"))
-//				{
-//					doc.setFechaDevuelto(entrega.getFESTADO().getTime());
-//					doc.setFichero(servicio.descargarDocumento(doc.getDochash()));
-//					doc.setfActu(new Date());
-//					doc.setuActu(uActu)
-//				}
-//			}
-//		}
-//		return modified;
-//	}
+	public boolean comprobarEstado(Documentos doc) throws RemoteException
+	{
+		boolean modified = false;
+		EntregaWS[] entregas = servicio.consultarEntregasPeticion(doc.getHashPeticion());
+		for(EntregaWS entrega: entregas)
+		{
+			if(entrega.getDOCCHASH().equals(doc.getDochash()))
+			{
+				String dni = entrega.getDESTCDNI();
+				Usuario usuario = genericDAO.select(Usuario.class, "dni", dni);
+				if(entrega.getCESTADO().equals("DEVUELTO"))
+				{
+					doc.setFechaDevuelto(entrega.getFESTADO().getTime());
+					doc.setFichero(servicio.descargarDocumento(doc.getDochash()));
+					doc.setActualizacion(new Date(), usuario);
+					modified = true;
+				}
+				else if(entrega.getCESTADO().equals("FIRMADO"))
+				{
+					doc.setFechaFirma(entrega.getFESTADO().getTime());
+					doc.setFichero(servicio.descargarDocumento(doc.getDochash()));
+					doc.setActualizacion(new Date(), usuario);
+					modified = true;
+				}
+			}
+		}
+		return modified;
+	}
 }
