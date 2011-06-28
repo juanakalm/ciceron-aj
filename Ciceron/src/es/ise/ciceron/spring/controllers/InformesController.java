@@ -1,6 +1,7 @@
 package es.ise.ciceron.spring.controllers;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,21 +23,23 @@ import org.springframework.web.servlet.ModelAndView;
 import org.xml.sax.SAXException;
 
 import es.ise.ciceron.model.AccesoContratos;
+import es.ise.ciceron.model.Bloque;
 import es.ise.ciceron.model.Documentos;
 import es.ise.ciceron.model.Expedientes;
 import es.ise.ciceron.model.FirmantesInformes;
 import es.ise.ciceron.model.Informe;
 import es.ise.ciceron.model.InformeJuridico;
 import es.ise.ciceron.model.InformeJuridicoModificado;
+import es.ise.ciceron.model.Punto;
 import es.ise.ciceron.model.PuntosEditados;
 import es.ise.ciceron.model.TextoInforme;
 import es.ise.ciceron.model.Tipologia;
-import es.ise.ciceron.model.TiposDocumentos;
 import es.ise.ciceron.model.UnidadesContratacion;
 import es.ise.ciceron.model.Usuario;
 import es.ise.ciceron.spring.annotations.SessionParam;
 import es.ise.ciceron.spring.command.BusquedaInforme;
 import es.ise.ciceron.spring.repositories.GenericDAO;
+import es.ise.ciceron.spring.repositories.GenericDAO.Sort;
 import es.ise.ciceron.spring.services.PortafirmaService;
 import es.ise.ciceron.spring.services.ProceduresService;
 import es.ise.ciceron.spring.services.ReportService;
@@ -45,6 +48,30 @@ import es.ise.ciceron.spring.util.Fichero;
 @Controller
 @RequestMapping("/informes")
 public class InformesController {
+	
+	@Controller
+	@RequestMapping("/informes/ajax")
+	public static class InformesAjaxController
+	{
+		@Autowired
+		private GenericDAO genericDAO;
+		
+		@RequestMapping("/bloques/{idTipologia}")
+		public ModelAndView obtenerBloquesTipologia(@PathVariable BigDecimal idTipologia)
+		{
+			ModelAndView mav = new ModelAndView("json");
+			mav.addObject(genericDAO.list(Bloque.class, new Sort<Bloque>("orden"),"idTipologia", idTipologia));
+			return mav;
+		}
+		
+		@RequestMapping("/puntos/{idBloque}")
+		public ModelAndView obtenerPuntosBloques(@PathVariable BigDecimal idBloque)
+		{
+			ModelAndView mav = new ModelAndView("json");
+			mav.addObject(genericDAO.list(Punto.class, new Sort<Punto>("orden"),"idBloque", idBloque));
+			return mav;
+		}
+	}
 	
 	@Autowired
 	private GenericDAO genericDAO;
@@ -177,14 +204,18 @@ public class InformesController {
 	public ModelAndView generarReport(@PathVariable BigDecimal idInforme, @SessionParam Usuario usuario)throws IOException, SAXException
 	{
 		Informe informe = genericDAO.get(Informe.class, idInforme);
+		InformeJuridicoModificado informeModif= genericDAO.select(InformeJuridicoModificado.class, "idExpediente", informe.getIdExpediente()); 
 		ModelAndView mav = new ModelAndView("redirect:/app/informes/elaborarInforme/"+informe.getIdExpediente());
 		
 		Documentos doc = new Documentos();
 		doc.setIdTipoDocumento(new BigDecimal(7));
+		doc.setIdExpediente(informe.getIdExpediente());
 		doc.setFichero(reportService.getReport("AJ_INFORME", "P_INF_ID", idInforme.toString()));
 		doc.setNombreFichero(String.format("Informe_%s", informe.getIdExpediente()));
 		doc.setExtension("pdf");
 		doc.setCreacion(new Date(), usuario);
+		if(informeModif != null)
+			doc.setIdModificado(informeModif.getIdModificado());
 		genericDAO.insert(doc);
 		informe.setIdDocumento(doc.getId());
 		informe.setActualizacion(new Date(), usuario);
@@ -194,10 +225,10 @@ public class InformesController {
 	}
 	
 	@RequestMapping("/elaborarInforme/visualizar/{idDocumento}")
-	public void visualizarInforme(@PathVariable BigDecimal idDocumento, HttpServletResponse response) throws IOException
+	public void visualizarInforme(@PathVariable BigDecimal idDocumento, OutputStream out,HttpServletResponse response) throws IOException
 	{
 		Documentos documento = genericDAO.selectWithBlob(Documentos.class, "id", idDocumento);
-		reportService.sendPdfToBrowser(documento.getFichero(), response);
+		reportService.sendPdfToBrowser(portafirmaService.getDocInputStream(documento), response);
 	}
 	
 	@RequestMapping("/elaborarInforme/sustituir/{idInforme}")
@@ -248,4 +279,5 @@ public class InformesController {
 		genericDAO.insertOrUpdate(Documentos.class, doc);
 		return mav;
 	}
+
 }

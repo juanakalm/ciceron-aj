@@ -47,7 +47,9 @@
 	
 	<mvc:interceptors>
 		<mvc:interceptor>
-           <mvc:mapping path="/informes**"/>
+           <mvc:mapping path="/informes/**"/>
+           <mvc:mapping path="/menu"/>
+           <mvc:mapping path="/tipologia"/>
            <bean class="es.ise.ciceron.spring.interceptors.SessionExpiredInterceptor"/>
        </mvc:interceptor>
 	</mvc:interceptors>

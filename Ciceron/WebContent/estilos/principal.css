@@ -31,7 +31,8 @@ th{
 	width: 400px; 
 	border: 1px solid;
 	border-color: #c50101;
-	background-image: url('/Ciceron/imagenes/degradadoOcre.gif');	
+	background-image: url('/Ciceron/imagenes/degradadoOcre.gif');
+	background-repeat: repeat-x;	
 	border-collapse: collapse;
 }
 

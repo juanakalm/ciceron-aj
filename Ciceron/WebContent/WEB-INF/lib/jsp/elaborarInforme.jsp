@@ -12,7 +12,7 @@
 			$('.tabla_busqueda .tipologia').change(function() {
 				if($(this).val() != '') {
 					$('.tabla_busqueda .bloque').daoSelect({
-						url: '<spring:url value="/app/ajax/daolist/Bloque/idTipologia/"/>'+$(this).val(),
+						url: '<spring:url value="/app/informes/ajax/bloques/"/>'+$(this).val(),
 						blank: '-- Seleccione bloque',
 						list: 'bloqueList',
 						label: 'descripcion',
@@ -34,7 +34,7 @@
 			$('.tabla_busqueda .bloque').change(function() {
 				if($(this).val() != '') {
 					$('.tabla_busqueda .punto').daoSelect({
-						url: '<spring:url value="/app/ajax/daolist/Punto/idBloque/"/>'+$(this).val(),
+						url: '<spring:url value="/app/informes/ajax/puntos/"/>'+$(this).val(),
 						blank: '-- Seleccione punto',
 						list: 'puntoList',
 						label: 'descripcionCorta',
@@ -70,12 +70,13 @@
 
 			$('#informes tbody tr td:not(.acciones)').click(function() {
 				var id = $(this).parent().attr('id').split('_')[1];
+				alert(id);
 				var url = '<spring:url value="/app/ajax/dao/PuntosEditados/idTextoInforme/"/>'+id;
 				$.getJSON(url, function(data) {
 					$('.id').val(data.puntosEditados.idTextoInforme);
 					$('.tipologia').val(data.puntosEditados.idTipologia);
 					$('.tabla_busqueda .bloque').daoSelect({
-						url: '<spring:url value="/app/ajax/daolist/Bloque/idTipologia/"/>'+data.puntosEditados.idTipologia,
+						url: '<spring:url value="/app/informes/ajax/bloques/"/>'+data.puntosEditados.idTipologia,
 						blank: '-- Seleccione bloque',
 						list: 'bloqueList',
 						label: 'descripcion',
@@ -83,7 +84,7 @@
 						selected: data.puntosEditados.idBloque
 					});
 					$('.tabla_busqueda .punto').daoSelect({
-						url: '<spring:url value="/app/ajax/daolist/Punto/idBloque/"/>'+data.puntosEditados.idBloque,
+						url: '<spring:url value="/app/informes/ajax/puntos/"/>'+data.puntosEditados.idBloque,
 						blank: '-- Seleccione punto',
 						list: 'puntoList',
 						label: 'descripcionCorta',
@@ -94,6 +95,7 @@
 					$('.ordenPunto').val(data.puntosEditados.ordenPunto);
 					$('.texto').val(data.puntosEditados.texto);
 				});
+				alert(url);
 				$("#tabla_elabora_informe th").text('Modificar informe');
 				$('#tabla_elabora_informe').show();
 			});
@@ -201,7 +203,6 @@
 					}
 				});
 			});
-			
 		});
 		</script>
 	</head>
@@ -304,7 +305,7 @@
 						<td colspan="10" align="right">Orden:</td>
 						<td>&nbsp;</td>
 						<td>
-							<textarea rows="1" class="ordenPunto" name="ordenPunto" style="width: 80px"></textarea>
+							<input type="text" class="ordenPunto" name="ordenPunto" style="width: 80px"/>
 					</tr>
 					
 					<tr>

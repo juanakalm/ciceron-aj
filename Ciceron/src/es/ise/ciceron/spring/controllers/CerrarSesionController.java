@@ -21,6 +21,7 @@ public class CerrarSesionController {
 	public ModelAndView model(Usuario usuario, HttpSession session){
 		ModelAndView mav = new ModelAndView("inicio");
 		session.removeAttribute("usuario");
+		session.invalidate();
 		mav.setViewName("redirect:/app/inicio");
 		return mav;
 	}
