@@ -18,13 +18,17 @@
 					window.open(url,'exp'+id,'toolbar=0,location=0,directories=0,status=1,menubar=1,scrollbars=1,resizable=1,top=5,left=0,width='+(screen.width-10)+',height='+(screen.height-120));
 				});
 				
-				$('#informes tbody tr button, #informesMod tbody tr button').click(function(event) {
+				$('#informes tbody tr button').click(function(event) {
 					var id = $(this).parents('tr').attr('id').split('_')[1];
  					var url = '<spring:url value="/app/informes/elaborarInforme/"/>'+id;
 					location.href = url;
 				});
 				
-				
+				$('#informesMod tbody tr button').click(function(event) {
+					var id = $(this).parents('tr').attr('id').split('_')[1];
+ 					var url = '<spring:url value="/app/informes/elaborarInforme/"/>'+id;
+					location.href = url;
+				});
 			});
 		</script>
 	</head>
@@ -91,6 +95,7 @@
 				<display:caption style="color: purple">Informes</display:caption>
 			</display:table>
 		</div>
+	
 		
 <!-- TABLA OCULTA DE LA CONSULTA SOBRE LOS INFORMES MODIFICADOS -->
 <!-- 		<div align="center"> -->

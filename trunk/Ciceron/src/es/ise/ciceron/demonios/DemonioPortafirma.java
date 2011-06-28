@@ -1,6 +1,8 @@
 package es.ise.ciceron.demonios;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,20 +25,21 @@ public class DemonioPortafirma
 		log.info(String.format("Cargando contexto desde %s...", contextPath));
 		ApplicationContext context = new FileSystemXmlApplicationContext(contextPath);
 		AutowireCapableBeanFactory beanFactory = context.getAutowireCapableBeanFactory();
-		GenericDAO genericDao = (GenericDAO)beanFactory.createBean(GenericDAO.class,AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR, false);
-		PortafirmaService portafirmaService = (PortafirmaService)beanFactory.createBean(PortafirmaService.class, AutowireCapableBeanFactory.AUTOWIRE_CONSTRUCTOR, false);
-		ProceduresService proceduresService = (ProceduresService)beanFactory.createBean(ProceduresService.class, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
+		PortafirmaService portafirmaService = (PortafirmaService)beanFactory.createBean(PortafirmaService.class, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
+		GenericDAO genericDao = (GenericDAO)beanFactory.createBean(GenericDAO.class,AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
+		ProceduresService proceduresService = (ProceduresService)beanFactory.createBean(ProceduresService.class, AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE,false);
 		log.info("Contexto cargado. Comprobando documentos...");
 		int contador = 0;
-		List<Documentos> documentos = genericDao.list(Documentos.class, new Property("fechaEnvio", Property.Operator.NOT_NULL), new Property("fechaFirma", Property.Operator.NULL), new Property("fechaDevuelto", Property.Operator.NULL));
+		List<Documentos> documentos = genericDao.list(Documentos.class, new Property("idTipoDocumento", new BigDecimal(7)), new Property("fechaEnvio", Property.Operator.NOT_NULL), new Property("fechaFirma", Property.Operator.NULL), new Property("fechaDevuelto", Property.Operator.NULL));
 		for(Documentos doc: documentos)
 		{
 			try
 			{
-				boolean modified = portafirmaService.comprobarEstado(doc);
-				if(modified)
+				Map<String, String> map = portafirmaService.comprobarEstado(doc);
+				if(!map.isEmpty())
 				{
-					genericDao.actualizarDocumentoConBLOB(doc);
+					genericDao.insertOrUpdateWithBlob(Documentos.class, doc);
+					proceduresService.actualizaInforme(doc.getId(), map.get("estado"), map.get("dni"));
 					contador++;
 				}
 			}

@@ -1,11 +1,17 @@
 package es.ise.ciceron.spring.services;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.xml.rpc.ServiceException;
@@ -14,9 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import es.ise.ciceron.mapper.UsuarioMapper;
 import es.ise.ciceron.model.Documentos;
 import es.ise.ciceron.model.Usuario;
-import es.ise.ciceron.spring.repositories.GenericDAO;
+import es.ise.ciceron.model.UsuarioExample;
 import es.ise.portafirma.ws.EntregaWS;
 import es.ise.portafirma.ws.client.PfServicioWS;
 import es.ise.portafirma.ws.client.PfServicioWSServiceLocator;
@@ -30,12 +37,10 @@ public class PortafirmaService
 	private BigDecimal prioridad = new BigDecimal(3);
 	private String urlInforme = "";
 	
-	@Autowired
-	private GenericDAO genericDAO;
-
+	private UsuarioMapper usuarioMapper;
 	
 	@Autowired
-	public PortafirmaService(@Qualifier("appProperties")Properties props) throws MalformedURLException, ServiceException
+	public void setProperties(@Qualifier("appProperties")Properties props) throws MalformedURLException, ServiceException
 	{
 		PfServicioWSServiceLocator locator = new PfServicioWSServiceLocator();
 		servicio = locator.getPfServicioWS(new URL(props.getProperty("pfirma.url")));
@@ -45,6 +50,12 @@ public class PortafirmaService
 		urlInforme = props.getProperty("pfirma.informe");
 	}
 	
+	@Autowired
+	public void setUsuarioMapper(UsuarioMapper usuarioMapper)
+	{
+		this.usuarioMapper = usuarioMapper;
+	}
+
 	public void enviarDocumentoAPortafirma(Documentos doc, String asunto, Usuario remitente, String... destinatarios)
 	{
 		try
@@ -83,32 +94,60 @@ public class PortafirmaService
 		}
 	}
 	
-	public boolean comprobarEstado(Documentos doc) throws RemoteException
+	public Map<String,String> comprobarEstado(Documentos doc) throws RemoteException
 	{
-		boolean modified = false;
+		Map <String,String> map = new HashMap<String,String>() ;
 		EntregaWS[] entregas = servicio.consultarEntregasPeticion(doc.getHashPeticion());
 		for(EntregaWS entrega: entregas)
 		{
 			if(entrega.getDOCCHASH().equals(doc.getDochash()))
 			{
 				String dni = entrega.getDESTCDNI();
-				Usuario usuario = genericDAO.select(Usuario.class, "dni", dni);
+				UsuarioExample example = new UsuarioExample();
+				example.or().andDniEqualTo(dni);
+				Usuario usuario = usuarioMapper.selectByExample(example).get(0);
 				if(entrega.getCESTADO().equals("DEVUELTO"))
 				{
 					doc.setFechaDevuelto(entrega.getFESTADO().getTime());
-					doc.setFichero(servicio.descargarDocumento(doc.getDochash()));
 					doc.setActualizacion(new Date(), usuario);
-					modified = true;
+					map.put("estado", entrega.getCESTADO());
+					map.put("dni", dni);
 				}
 				else if(entrega.getCESTADO().equals("FIRMADO"))
 				{
 					doc.setFechaFirma(entrega.getFESTADO().getTime());
-					doc.setFichero(servicio.descargarDocumento(doc.getDochash()));
 					doc.setActualizacion(new Date(), usuario);
-					modified = true;
+					map.put("estado", entrega.getCESTADO());
+					map.put("dni", dni);
 				}
 			}
 		}
-		return modified;
+		return map;
+	}
+
+	public BufferedInputStream getDocInputStream(Documentos documento) throws IOException
+	{
+		BufferedInputStream buf = null;
+		if(documento.getFechaFirma() != null && documento.getDochash() != null && documento.getHashPeticion() != null)
+		{
+			URL url = new URL(getUrlInforme(documento));
+			URLConnection conn = url.openConnection();
+			buf = new BufferedInputStream(conn.getInputStream());
+		}
+		else
+		{
+			buf = new BufferedInputStream(new ByteArrayInputStream(documento.getFichero()));
+		}
+		return buf;
+	}
+
+	private String getUrlInforme(Documentos documento)
+	{
+		return this.getUrlInforme(documento.getDochash(),documento.getHashPeticion());
+	}
+
+	private String getUrlInforme(String dochash, String hashPeticion)
+	{
+		return String.format(urlInforme + "?docHASH=%s&petHASH=%s", dochash, hashPeticion);
 	}
 }

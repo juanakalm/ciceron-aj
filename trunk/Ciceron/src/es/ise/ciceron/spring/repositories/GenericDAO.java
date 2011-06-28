@@ -15,13 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import es.ise.ciceron.mapper.CiceronMapper;
-import es.ise.ciceron.mapper.DocumentosMapper;
-import es.ise.ciceron.model.Documentos;
 
 @Repository
 public class GenericDAO
 {
-	private DocumentosMapper documentosMapper;
 	private Map<String, CiceronMapper> mappers = new HashMap<String, CiceronMapper>();
 	
 	/**
@@ -534,11 +531,5 @@ public class GenericDAO
 	public <T> BigDecimal sum(List<T> daos, String field)
 	{
 		return sum(daos, new SimpleFieldNumericExpression<T>(field));
-	}
-
-	public void actualizarDocumentoConBLOB(Documentos doc)
-	{
-		documentosMapper.updateByPrimaryKeyWithBLOBs(doc);
-		
 	}
 }

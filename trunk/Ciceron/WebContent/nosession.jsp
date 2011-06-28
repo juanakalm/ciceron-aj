@@ -23,13 +23,13 @@
 								<c:set var="context"><spring:url value="/app"/></c:set>
 									<table id="tablaLogin" align="center">
 										<tr>
-						 					<td colspan="5">&nbsp;</td>
+						 					<td>&nbsp;</td>
 						 				</tr>
 						 				<tr>
-						 					<th align="center" colspan="5" style="color:#c50101">SU SESIÓN HA CADUCADO</th>
+						 					<th align="center"  style="color:#c50101">SU SESIÓN HA CADUCADO</th>
 						 				</tr>
 						 				<tr>
-											<td align="center" colspan="5">
+											<td align="center" >
 												<table style="width: 95%; background-image: url('/Ciceron/imagenes/logo.png'); background-repeat: no-repeat;">
 													<tr>
 														<td>&nbsp;</td>

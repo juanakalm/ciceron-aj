@@ -113,6 +113,7 @@
         	<columnOverride column="F_CREACION" property="fechaCreacion"/>
         	<columnOverride column="UC_ACR" property="acronimoUnidadContratacion"/>
         	<columnOverride column="TIPO" property="tipo"/>
+        	<columnOverride column="MOD_ID" property="idModificado"/>
         </table>
         
         <table tableName="UNIDADES_CONTRATACION" domainObjectName="UnidadesContratacion">
@@ -186,8 +187,8 @@
         	   <columnOverride column="DOC_F_PORTAFIRMA" property="fechaEnvio"/>
         	   <ignoreColumn column="DOC_F_ARIES"/>
         	   <columnOverride column="DOC_D_DOCUMENTO" property="nombreFichero"/>
+        	   <columnOverride column="DOC_MOD_ID" property="idModificado"/>
         	   <ignoreColumn column="DOC_PRO_ID"/>
-        	   <ignoreColumn column="DOC_MOD_ID"/>
         	   <ignoreColumn column="DOC_LIQ_ID"/>
         	   <columnOverride column="DOC_PETHASH" property="hashPeticion"/>
         	   <ignoreColumn column="DOC_HASH_1"/>
