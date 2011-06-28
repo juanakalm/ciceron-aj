@@ -86,17 +86,6 @@
 			});
 		});
 		
-		$('.volverTipologia').each(function() {
-			$(this).css('cursor', 'pointer');
-			$(this).attr({
-				src : '<spring:url value="/imagenes/boton_atras.png"/>',
-				title : 'Volver sin guardar'
-			});
-			$(this).click(function() {
-				location.href = '<spring:url value="/app/tipologia"/>';
-			});
-		});
-		
 		$('.volver').each(function() {
 			$(this).css('cursor', 'pointer');
 			$(this).attr({
@@ -177,18 +166,20 @@
 			<tr>
 				<td style="width: 630px">&nbsp;</td>
 				<td>
-					<table style="border: white 2px solid; font-size: 11px; width: 200px" align="left">
+					<table style="border: white 2px solid; font-size: 11px; width: 200px; " align="left">
 						<tr>
-			
-							<td><script
-								type="text/javascript">MostrarFechaActual();</script>
+							<td style="padding-left: 5px;">
+								<c:out value="${sessionScope.usuario.nombre}"/>
 							</td>
-							<td align="right"> <img class="salir"/>
+							<td align="right" > 
+								<img class="salir"/>
 							</td>
 						</tr>
 						<tr>
-							<td colspan="2">
-								<c:out value="${sessionScope.usuario.nombre}"/>
+							<td colspan="2" style="padding-left: 5px;">
+								<script	type="text/javascript">
+									MostrarFechaActual();
+								</script>
 							</td>
 						</tr>
 					</table>

@@ -104,6 +104,28 @@
 				$('#tabla_edita_punto').show();
 			});
 		});
+
+		$('.volverTipologia').each(function() {
+			$(this).css('cursor', 'pointer');
+			$(this).attr({
+				src : '<spring:url value="/imagenes/boton_atras.png"/>',
+				title : 'Volver sin guardar'
+			});
+			$(this).click(function() {
+				location.href = '<spring:url value="/app/tipologia"/>';
+			});
+		});
+
+		$('.volverMenu').each(function() {
+			$(this).css('cursor', 'pointer');
+			$(this).attr({
+				src : '<spring:url value="/imagenes/boton_atras.png"/>',
+				title : 'Volver'
+			});
+			$(this).click(function() {
+				location.href = '<spring:url value="/app/menu"/>';
+			});
+		});
 	});
 		
 </script>
@@ -133,7 +155,7 @@
 					<td align="left">
 						<img class="buscar" />
 					</td>
-					<td align="right"> <img class="volver"/> <img class="anadirBloque"/> <img class="anadirPunto"/> </td>			
+					<td align="right"> <img class="volverMenu"/> <img class="anadirBloque"/> <img class="anadirPunto"/> </td>			
 				</tr>
 			</tbody>
 		</table>

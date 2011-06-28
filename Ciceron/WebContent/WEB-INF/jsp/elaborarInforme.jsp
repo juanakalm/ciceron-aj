@@ -334,50 +334,52 @@
 		</div>
 		<br>
 		<div>
-			<table class="tabla_busqueda">
-				<thead>
-					<tr>
-						<th colspan="2">
-							Informe
-							<c:choose>
-								<c:when test="${estado=='NO_GENERADO'}">no generado</c:when>
-								<c:when test="${estado=='PENDIENTE_ENVIO'}">pendiente de envio a Portafirma</c:when>
-								<c:when test="${estado=='ENVIADO'}">enviado a portafirma</c:when>
-								<c:when test="${estado=='FIRMADO'}">firmado</c:when>
-								<c:when test="${estado=='DEVUELTO'}">devuelto</c:when>
-							</c:choose>
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td align="right">
-							<c:choose>
-								<c:when test="${estado=='NO_GENERADO'}">
-									<button id="borrador">Borrador</button>
-									<button id="report">Generar</button>
-								</c:when>
-								<c:when test="${estado=='PENDIENTE_ENVIO'}">
-									<button id="visualizar">Visualizar</button>
-									<button id="sustituir">Sustituir</button>
-									<button id="enviar">Enviar a P.F.</button>
-									<button id="eliminar">Eliminar</button>
-								</c:when>
-								<c:when test="${estado=='ENVIADO'}">
-									<button id="visualizar">Visualizar</button>
-								</c:when>
-								<c:when test="${estado=='FIRMADO'}">
-									<button id="visualizar">Visualizar</button>
-								</c:when>
-								<c:when test="${estado=='DEVUELTO'}">
-									<button id="visualizar">Visualizar</button>
-									<button id="eliminar">Eliminar</button>
-								</c:when>
-							</c:choose>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<c:if test="${!empty listaPuntosInforme}">
+				<table class="tabla_busqueda">
+					<thead>
+						<tr>
+							<th colspan="2">
+								Informe
+								<c:choose>
+									<c:when test="${estado=='NO_GENERADO'}">no generado</c:when>
+									<c:when test="${estado=='PENDIENTE_ENVIO'}">pendiente de envio a Portafirma</c:when>
+									<c:when test="${estado=='ENVIADO'}">enviado a portafirma</c:when>
+									<c:when test="${estado=='FIRMADO'}">firmado</c:when>
+									<c:when test="${estado=='DEVUELTO'}">devuelto</c:when>
+								</c:choose>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td align="right">
+								<c:choose>
+									<c:when test="${estado=='NO_GENERADO'}">
+										<button id="borrador">Borrador</button>
+										<button id="report">Generar</button>
+									</c:when>
+									<c:when test="${estado=='PENDIENTE_ENVIO'}">
+										<button id="visualizar">Visualizar</button>
+										<button id="sustituir">Sustituir</button>
+										<button id="enviar">Enviar a P.F.</button>
+										<button id="eliminar">Eliminar</button>
+									</c:when>
+									<c:when test="${estado=='ENVIADO'}">
+										<button id="visualizar">Visualizar</button>
+									</c:when>
+									<c:when test="${estado=='FIRMADO'}">
+										<button id="visualizar">Visualizar</button>
+									</c:when>
+									<c:when test="${estado=='DEVUELTO'}">
+										<button id="visualizar">Visualizar</button>
+										<button id="eliminar">Eliminar</button>
+									</c:when>
+								</c:choose>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</c:if>
 		</div>
 		
  <!-- Sustuir informe -->
