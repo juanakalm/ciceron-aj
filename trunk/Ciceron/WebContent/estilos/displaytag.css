@@ -17,12 +17,12 @@ table.displaytag td,table.displaytag th {
 
 table.displaytag th {
     background-color: #FFE87C;
-    color: #FFFFFF;
     padding: 3px;
     text-align: left;
     text-decoration: none;
     font-family: Verdana;
     font-size: 14px;
+    color: purple;
 }
 
 table.displaytag td {

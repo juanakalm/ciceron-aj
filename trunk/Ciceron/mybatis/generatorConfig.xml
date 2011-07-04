@@ -221,5 +221,51 @@
                enableUpdateByPrimaryKey="false">
         </table>
         
+      	<table tableName="VERSIONES_PLIEGOS" domainObjectName="VersionesPliegos">
+               <generatedKey column="VP_ID" sqlStatement="SELECT VERSIONES_PLIEGOS_S1.nextval FROM DUAL" identity="false" type="pre"/>
+               <columnRenamingRule searchString="^VP_" replaceString="" />
+        		<columnOverride column="VP_NOMBRE_FICH" property="nombreFichero"/>
+        		<columnOverride column="VP_NAT_ID" property="idNaturaleza"/>
+        		<columnOverride column="VP_PROC_ID" property="idProcedimiento"/>
+        		<columnOverride column="VP_TS_ID" property="idTiposServicios"/>
+        		<columnOverride column="VP_NORM_ID" property="idNormativa"/>
+        		<columnOverride column="VP_L_ACTIVO" property="activo"/>
+        </table>
+        
+        <table tableName="VERSIONES_PLIEGOS_V" domainObjectName="ListaDePliegos"
+               enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               enableInsert="false" enableUpdateByExample="false"
+               enableUpdateByPrimaryKey="false">
+               <columnRenamingRule searchString="^VP_" replaceString="" />
+        </table>
+        
+         <table tableName="PROCEDIMIENTOS_V" domainObjectName="Procedimiento"
+               enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               enableInsert="false" enableUpdateByExample="false"
+               enableUpdateByPrimaryKey="false">
+               <columnRenamingRule searchString="^PROC_" replaceString="" />
+        </table>
+        
+        <table tableName="NATURALEZA" domainObjectName="Naturaleza"
+               enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               enableInsert="false" enableUpdateByExample="false"
+               enableUpdateByPrimaryKey="false">
+               <columnRenamingRule searchString="^NAT_" replaceString="" />
+        </table>
+        
+        <table tableName="NORMATIVA" domainObjectName="Normativa"
+               enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               enableInsert="false" enableUpdateByExample="false"
+               enableUpdateByPrimaryKey="false">
+               <columnRenamingRule searchString="^NORM_" replaceString="" />
+        </table>
+        
+         <table tableName="TIPOS_SERVICIOS" domainObjectName="TipoServicio"
+               enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               enableInsert="false" enableUpdateByExample="false"
+               enableUpdateByPrimaryKey="false">
+               <columnRenamingRule searchString="^TS_" replaceString="" />
+        </table>
+        
 	</context>
 </generatorConfiguration>

@@ -5,8 +5,10 @@
 <title>Busqueda</title>
 <script>
 	$(document).ready(function() {
+		
 		$('#tabla_edita_bloque').hide();
 		$('#tabla_edita_punto').hide();
+		
 		$('#bloques img.eliminarPunto').each(function() {
 			$(this).css('cursor', 'pointer');
 			$(this).attr({
@@ -15,8 +17,16 @@
 			});
 			$(this).click(function() {
 				var id = $(this).attr('id').split('_')[1];
+				var url = '<spring:url value="/app/informes/ajax/comprobarPunto/"/>'+id;
 				if (confirm('¿Desea realmente eliminar este punto?')) {
-					location.href = '<spring:url value="/app/tipologia/puntos/eliminar/"/>'+ id;
+					$.getJSON(url, function(data) {
+						if(data.comprobarPunto) {
+							alert(data.comprobarPunto);
+						}
+						else
+							location.href = '<spring:url value="/app/tipologia/puntos/eliminar/"/>'+ id;
+				
+					});
 				}
 			});
 		});
@@ -76,9 +86,16 @@
 				title : 'Eliminar bloque'
 			});
 			$(this).click(function() {
-				var id = $(this).attr('id').split('_')[1];
+				var idb = $(this).attr('id').split('_')[1];		
+				var url = '<spring:url value="/app/informes/ajax/comprobarBloqueConPunto/"/>'+idb;
 				if (confirm('¿Desea realmente eliminar este bloque y todos sus puntos?')) {
-					location.href = '<spring:url value = "/app/tipologia/bloques/eliminar/"/>'+ id;
+					$.getJSON(url, function(data) {
+						if(data.comprobarBloqueConPunto) {
+							alert(data.comprobarBloqueConPunto);
+						}
+						else
+							location.href = '<spring:url value = "/app/tipologia/bloques/eliminar/"/>'+ idb;
+					});
 				}
 			});
 		});
