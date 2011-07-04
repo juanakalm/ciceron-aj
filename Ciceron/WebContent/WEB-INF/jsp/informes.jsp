@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<title>Informes Jurídicos</title>
+		<title>Informes </title>
 		<script>
 			$(document).ready(function() {
 
@@ -85,28 +85,38 @@
 				<display:column property="descripcionExpediente" title="Descripción" sortable="true" maxLength="100"/>
 				<display:column property="presupuestoTotalExpediente" title="Presupuesto Total" sortable="true" decorator="es.ise.ciceron.displaytag.decorators.ImporteSinDivisaDecorator" style="text-align: right;"/>
 				<display:column property="fechaAutorizacionGastoExpediente" title="Fecha Autorización Gastos" sortable="true" decorator="es.ise.ciceron.displaytag.decorators.ShortDateDecorator"/>
+				<display:column title="Versión" sortable="true"/>
+				<display:column title="Fecha Petición" sortable="true"/>
 				<display:column class="acciones">
 					<button style="width: 90px">Informe</button>
 				</display:column>
-				<display:caption style="color: purple">Informes</display:caption>
+				<display:column>
+					<button style="width: 90px">Observaciones</button>
+				</display:column>
+				<display:caption style="color: purple">Informes Jurídicos Pendientes</display:caption>
 			</display:table>
 		</div>
 		
 <!-- TABLA OCULTA DE LA CONSULTA SOBRE LOS INFORMES MODIFICADOS -->
-<!-- 		<div align="center"> -->
-<%-- 			<display:table name="listaInformesMod" uid="informesMod" pagesize="5" requestURI="${context}/informes" --%>
-<!-- 							decorator="es.ise.ciceron.displaytag.decorators.ListaInformesModificadosDecorator"> -->
-<%-- 				<display:column property="codigoExpediente" title="Código" sortable="true"/> --%>
-<%-- 				<display:column property="descripcionContrato" title="Descripción" sortable="true" maxLength="80"/> --%>
-<%-- 				<display:column property="presupuestoTotalContrato" title="Presupuesto Total" sortable="true" decorator="es.ise.ciceron.displaytag.decorators.ImporteSinDivisaDecorator" style="text-align: right;"/> --%>
-<%-- 				<display:column property="fechaAutorizacionGastoExpediente" title="Fecha Autorización Gastos" sortable="true" decorator="es.ise.ciceron.displaytag.decorators.ShortDateDecorator"/> --%>
-<%-- 				<display:column property="proveedor" title="Proveedor" sortable="true"/> --%>
-<%-- 				<display:column class="acciones"> --%>
-<!-- 					<button style="width: 95px">Informe</button> -->
-<%-- 				</display:column> --%>
-<%-- 				<display:caption style="color: purple">Informes Modificados</display:caption> --%>
-<%-- 			</display:table> --%>
-<!-- 		</div> -->
+		<div align="center">
+			<display:table name="listaInformesMod" uid="informesMod" pagesize="5" requestURI="${context}/informes"
+							decorator="es.ise.ciceron.displaytag.decorators.ListaInformesModificadosDecorator">
+				<display:column property="codigoExpediente" title="Código" sortable="true"/>
+				<display:column property="descripcionContrato" title="Descripción" sortable="true" maxLength="80"/>
+				<display:column property="presupuestoTotalContrato" title="Presupuesto Total" sortable="true" decorator="es.ise.ciceron.displaytag.decorators.ImporteSinDivisaDecorator" style="text-align: right;"/>
+				<display:column property="fechaAutorizacionGastoExpediente" title="Fecha Autorización Gastos" sortable="true" decorator="es.ise.ciceron.displaytag.decorators.ShortDateDecorator"/>
+				<display:column property="proveedor" title="Proveedor" sortable="true"/>
+				<display:column title="Versión" sortable="true"/>
+				<display:column title="Fecha Petición" sortable="true"/>
+				<display:column class="acciones">
+					<button style="width: 95px">Informe</button>
+				</display:column>
+				<display:column>
+					<button style="width: 90px">Observaciones</button>
+				</display:column>
+				<display:caption style="color: purple">Informes Jurídicos Pendientes Modificados</display:caption>
+			</display:table>
+		</div>
 		</c:if>
 		
 		</div>

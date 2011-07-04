@@ -12,7 +12,7 @@
 			$('.tabla_busqueda .tipologia').change(function() {
 				if($(this).val() != '') {
 					$('.tabla_busqueda .bloque').daoSelect({
-						url: '<spring:url value="/app/ajax/daolist/Bloque/idTipologia/"/>'+$(this).val(),
+						url: '<spring:url value="/app/informes/ajax/bloques/"/>'+$(this).val(),
 						blank: '-- Seleccione bloque',
 						list: 'bloqueList',
 						label: 'descripcion',
@@ -34,7 +34,7 @@
 			$('.tabla_busqueda .bloque').change(function() {
 				if($(this).val() != '') {
 					$('.tabla_busqueda .punto').daoSelect({
-						url: '<spring:url value="/app/ajax/daolist/Punto/idBloque/"/>'+$(this).val(),
+						url: '<spring:url value="/app/informes/ajax/puntos/"/>'+$(this).val(),
 						blank: '-- Seleccione punto',
 						list: 'puntoList',
 						label: 'descripcionCorta',
@@ -304,7 +304,7 @@
 						<td colspan="10" align="right">Orden:</td>
 						<td>&nbsp;</td>
 						<td>
-							<textarea rows="1" class="ordenPunto" name="ordenPunto" style="width: 80px"></textarea>
+							<input type="text" class="ordenPunto" name="ordenPunto" size="3" />
 					</tr>
 					
 					<tr>

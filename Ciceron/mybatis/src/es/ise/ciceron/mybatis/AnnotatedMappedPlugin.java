@@ -35,7 +35,7 @@ public class AnnotatedMappedPlugin extends PluginAdapter
 		//añadir funciones de utilidad para modelos con campos de auditorias
 		for(Field field: topLevelClass.getFields())
 		{
-			if(field.getName().equals("fActu"))
+			if(field.getName().equals("fActu") && !introspectedTable.getTableConfiguration().getTableName().equals("VERSIONES_PLIEGOS_V"))
 			{
 				Method methodActualizacion = new Method();
 				methodActualizacion.setName("setActualizacion");

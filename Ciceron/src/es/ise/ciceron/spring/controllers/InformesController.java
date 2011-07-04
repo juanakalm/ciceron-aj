@@ -10,6 +10,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.PropertyBatchUpdateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -39,6 +40,8 @@ import es.ise.ciceron.model.Usuario;
 import es.ise.ciceron.spring.annotations.SessionParam;
 import es.ise.ciceron.spring.command.BusquedaInforme;
 import es.ise.ciceron.spring.repositories.GenericDAO;
+import es.ise.ciceron.spring.repositories.GenericDAO.Property;
+import es.ise.ciceron.spring.repositories.GenericDAO.Property.Operator;
 import es.ise.ciceron.spring.repositories.GenericDAO.Sort;
 import es.ise.ciceron.spring.services.PortafirmaService;
 import es.ise.ciceron.spring.services.ProceduresService;
@@ -69,6 +72,33 @@ public class InformesController {
 		{
 			ModelAndView mav = new ModelAndView("json");
 			mav.addObject(genericDAO.list(Punto.class, new Sort<Punto>("orden"),"idBloque", idBloque));
+			return mav;
+		}
+		
+		@RequestMapping("/comprobarPunto/{idPunto}")
+		public ModelAndView comprobarPuntoEnInforme(@PathVariable BigDecimal idPunto)
+		{
+			ModelAndView mav = new ModelAndView("json");
+			if(genericDAO.list(TextoInforme.class, "idPunto", idPunto).size()>0)
+			{
+				mav.addObject("comprobarPunto","No puede eliminarse el punto porque ha sido usado en algún Informe");
+			}
+			return mav;
+		}
+		
+		@RequestMapping("/comprobarBloqueConPunto/{idBloque}")
+		public ModelAndView comprobarBloqueConPuntoEnInforme(@PathVariable BigDecimal idBloque)
+		{
+			ModelAndView mav = new ModelAndView("json");
+			List<BigDecimal>puntos = new ArrayList<BigDecimal>();
+			for(Punto p: genericDAO.list(Punto.class, "idBloque",idBloque))
+			{
+				puntos.add(p.getId());
+			}
+			if(genericDAO.list(TextoInforme.class, new Property ("idPunto", puntos, Operator.IN)).size()>0)
+			{
+				mav.addObject("comprobarBloqueConPunto","No puede eliminarse el bloque porque tiene puntos que han sido usados en algún Informe");
+			}
 			return mav;
 		}
 	}
