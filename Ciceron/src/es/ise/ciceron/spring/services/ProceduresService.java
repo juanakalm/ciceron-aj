@@ -19,6 +19,8 @@ public class ProceduresService
 	
 	private SimpleJdbcCall actualizarInformeCall;
 	
+	private SimpleJdbcCall estadoPliegoCall;
+	
 	@Autowired
 	public void setDataSource(DataSource dataSource)
 	{
@@ -38,6 +40,16 @@ public class ProceduresService
 							  ,new SqlParameter("P_ESTADO_V", java.sql.Types.VARCHAR)
 							  ,new SqlParameter("P_DNI_V", java.sql.Types.VARCHAR)
 			);
+		
+		estadoPliegoCall =new SimpleJdbcCall(dataSource)
+			.withCatalogName("PK_VALIDAR")
+			.withFunctionName("FU_ELIMINA_VERSION_PLIEGO")
+			.withoutProcedureColumnMetaDataAccess()
+			.declareParameters(
+					new SqlOutParameter("V_L_ELIMINA", java.sql.Types.VARCHAR),
+					new SqlParameter("P_VP_ID", java.sql.Types.INTEGER),
+					new SqlParameter("P_US_ID", java.sql.Types.INTEGER)
+			);
 	}
 	
 	public String estadoInforme(BigDecimal idInforme)
@@ -54,5 +66,14 @@ public class ProceduresService
 		map.addValue("P_ESTADO_V", estado);
 		map.addValue("P_DNI_V", dni);
 		actualizarInformeCall.execute(map);
+	}
+	
+	public String estadoPliego(BigDecimal idVersionesPliego, BigDecimal idUsuario)
+	{
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("P_VP_ID", idVersionesPliego);
+		params.addValue("P_US_ID", idUsuario);
+		Map<String, Object> result = estadoPliegoCall.execute(params);
+		return result.get("V_L_ELIMINA").toString();
 	}
 }

@@ -91,6 +91,7 @@
         	<columnOverride column="F_CREACION" property="fechaCreacion"/>
         	<columnOverride column="UC_ACR" property="acronimoUnidadContratacion"/>
         	<columnOverride column="TIPO" property="tipo"/>
+        	<columnOverride column="VP_VERSION" property="version"/>
         </table>
         
         <table tableName="INFORME_AJ_MOD_V" domainObjectName="InformeJuridicoModificado"
@@ -265,6 +266,49 @@
                enableInsert="false" enableUpdateByExample="false"
                enableUpdateByPrimaryKey="false">
                <columnRenamingRule searchString="^TS_" replaceString="" />
+        </table>
+        
+        <table tableName="AJ_TIPOS_OPERACION" domainObjectName="TipoOperacion">
+               <generatedKey column="TO_ID" sqlStatement="SELECT AJ_TIPOS_OPERACION_S1.nextval FROM DUAL" identity="false" type="pre"/>
+               <columnRenamingRule searchString="^TO_" replaceString="" />
+        </table>
+        
+        <table tableName="AJ_OTRAS_UNIDADES" domainObjectName="OtrasUnidades">
+               <generatedKey column="OU_ID" sqlStatement="SELECT AJ_OTRAS_UNIDADES_S1.nextval FROM DUAL" identity="false" type="pre"/>
+               <columnRenamingRule searchString="^OU_" replaceString="" />
+        </table>
+        
+         <table tableName="AJ_ES_DOCUMENTOS" domainObjectName="ESDocumento">
+               <generatedKey column="ES_ID" sqlStatement="SELECT AJ_ES_DOCUMENTOS_S1.nextval FROM DUAL" identity="false" type="pre"/>
+               <columnRenamingRule searchString="^ES_" replaceString="" />
+        	   <columnOverride column="ES_TO_ID" property="idTipoOperacion"/>
+        	   <columnOverride column="ES_CON_ID" property="idContrato"/>
+        	   <columnOverride column="ES_EN_ID" property="idEntidad"/>
+        	   <columnOverride column="ES_UC_ID" property="idUnidadContratacion"/>
+        	   <columnOverride column="ES_OU_ID" property="idOtrasUnidades"/>
+        </table>
+        
+        <table tableName="AJ_ESDOCUMENTOS_V" domainObjectName="DocumentosES"
+               enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               enableInsert="false" enableUpdateByExample="false"
+               enableUpdateByPrimaryKey="false">
+        </table>
+        
+        <table schema="CONTA" tableName="SOLICITUDES" domainObjectName="Solicitudes"
+               enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               enableInsert="false" enableUpdateByExample="false"
+               enableUpdateByPrimaryKey="false">
+               <columnRenamingRule searchString="^S_" replaceString="" />
+               <columnOverride column="S_DESC" property="descripcion"/>
+        </table>
+        
+        <table schema="CONTA" tableName="PARAMETROS_SOLICITUDES" domainObjectName="ParametrosSolicitudes"
+               enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               enableInsert="false" enableUpdateByExample="false"
+               enableUpdateByPrimaryKey="false">
+               <columnRenamingRule searchString="^PS_" replaceString="" />
+               <columnOverride column="PS_SOLICITUD" property="idSolicitud"/>
+               <columnOverride column="PS_TIPO" property="idTipo"/>
         </table>
         
 	</context>

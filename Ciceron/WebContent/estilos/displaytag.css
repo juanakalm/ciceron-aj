@@ -21,8 +21,9 @@ table.displaytag th {
     text-align: left;
     text-decoration: none;
     font-family: Verdana;
-    font-size: 14px;
+    font-size: 12px;
     color: purple;
+   
 }
 
 table.displaytag td {
