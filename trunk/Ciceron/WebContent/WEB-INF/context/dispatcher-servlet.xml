@@ -47,6 +47,7 @@
 	
 	<mvc:interceptors>
 		<mvc:interceptor>
+		   <mvc:mapping path="/listados"/>
 		   <mvc:mapping path="/pliegos"/>
            <mvc:mapping path="/informes/**"/>
            <mvc:mapping path="/menu"/>

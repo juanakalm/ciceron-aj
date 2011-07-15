@@ -60,7 +60,7 @@
 															<a style="color: green" title="Volver a conectar" href="/Ciceron/index.jsp">Volver a conectar</a>
 														</td>
 														<td>
-															<a style="color: green" title="Salir" onclick="cerrar();">Salir</a>
+															<a style="color: green; cursor: pointer;" title="Salir" onclick="cerrar();">Salir</a>
 														</td>
 													</tr>
 									

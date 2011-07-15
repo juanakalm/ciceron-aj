@@ -5,6 +5,7 @@
 		<pattern>/nosession.jsp</pattern>
 		<pattern>/app/inicio</pattern>
 		<pattern>/app/inicio/</pattern>
+		<pattern>/app/listados/parametros/*</pattern>
 	</excludes>
 	<decorator name="default" page="default.jsp">
 		<pattern>/*</pattern>

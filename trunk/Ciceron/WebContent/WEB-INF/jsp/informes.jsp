@@ -18,12 +18,22 @@
 					window.open(url,'exp'+id,'toolbar=0,location=0,directories=0,status=1,menubar=1,scrollbars=1,resizable=1,top=5,left=0,width='+(screen.width-10)+',height='+(screen.height-120));
 				});
 				
-				$('#informes tbody tr button, #informesMod tbody tr button').click(function(event) {
+				$('#informes tbody tr button.informe, #informesMod tbody tr button.informe').click(function(event) {
 					var id = $(this).parents('tr').attr('id').split('_')[1];
  					var url = '<spring:url value="/app/informes/elaborarInforme/"/>'+id;
 					location.href = url;
 				});
 				
+				$('.volverMenu').each(function() {
+					$(this).css('cursor', 'pointer');
+					$(this).attr({
+						src : '<spring:url value="/imagenes/boton_volver22.png"/>',
+						title : 'Volver'
+					});
+					$(this).click(function() {
+						location.href = '<spring:url value="/app/menu"/>';
+					});
+				});
 				
 			});
 		</script>
@@ -69,7 +79,7 @@
 					</tr>
 					<tr>
 						<td colspan="7" align="right">
-							<img class="volver"/> <img class="limpiar"/><img class="buscar">
+							<img class="volverMenu"/> <img class="limpiar"/><img class="buscar">
 						</td>
 					</tr>
 				</tbody>
@@ -85,12 +95,12 @@
 				<display:column property="descripcionExpediente" title="Descripción" sortable="true" maxLength="100"/>
 				<display:column property="presupuestoTotalExpediente" title="Presupuesto Total" sortable="true" decorator="es.ise.ciceron.displaytag.decorators.ImporteSinDivisaDecorator" style="text-align: right;"/>
 				<display:column property="fechaAutorizacionGastoExpediente" title="Fecha Autorización Gastos" sortable="true" decorator="es.ise.ciceron.displaytag.decorators.ShortDateDecorator"/>
-				<display:column title="Versión" sortable="true"/>
-				<display:column title="Fecha Petición" sortable="true"/>
-				<display:column class="acciones">
-					<button style="width: 90px">Informe</button>
+				<display:column property="version" title="Versión" sortable="true"/>
+				<display:column property="fPeticion" title="Fecha Petición" sortable="true" decorator="es.ise.ciceron.displaytag.decorators.ShortDateDecorator"/>
+				<display:column class="acciones" >
+					<button style="width: 90px" class="informe">Informe</button>
 				</display:column>
-				<display:column>
+				<display:column class="acciones">
 					<button style="width: 90px">Observaciones</button>
 				</display:column>
 				<display:caption style="color: purple">Informes Jurídicos Pendientes</display:caption>
@@ -106,12 +116,11 @@
 				<display:column property="presupuestoTotalContrato" title="Presupuesto Total" sortable="true" decorator="es.ise.ciceron.displaytag.decorators.ImporteSinDivisaDecorator" style="text-align: right;"/>
 				<display:column property="fechaAutorizacionGastoExpediente" title="Fecha Autorización Gastos" sortable="true" decorator="es.ise.ciceron.displaytag.decorators.ShortDateDecorator"/>
 				<display:column property="proveedor" title="Proveedor" sortable="true"/>
-				<display:column title="Versión" sortable="true"/>
-				<display:column title="Fecha Petición" sortable="true"/>
+				<display:column property="fPeticion" title="Fecha Petición" sortable="true" decorator="es.ise.ciceron.displaytag.decorators.ShortDateDecorator"/>
 				<display:column class="acciones">
-					<button style="width: 95px">Informe</button>
+					<button style="width: 95px" class="informe">Informe</button>
 				</display:column>
-				<display:column>
+				<display:column class="acciones">
 					<button style="width: 90px">Observaciones</button>
 				</display:column>
 				<display:caption style="color: purple">Informes Jurídicos Pendientes Modificados</display:caption>

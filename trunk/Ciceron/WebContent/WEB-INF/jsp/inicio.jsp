@@ -10,6 +10,9 @@
 		<script src="<spring:url value="/scripts/jquery.min.js"/>"></script>
 		<script>
 		$(document).ready(function() {
+			
+			$('#focus').focus();
+			
 			$('.volver').each(function() {
 				$(this).css('cursor', 'pointer');
 				$(this).attr({
@@ -88,8 +91,8 @@
 						 					<td align="right" width="40%">
 						 						Usuario:
 						 					</td>
-						 					<td align="left">
-						 						<form:input path="identificador" cssStyle="width: 140px;"/>
+						 					<td align="left" class="focus">
+						 						<form:input id="focus" path="identificador" cssStyle="width: 140px;"/>
 						 					</td>
 						 				</tr>
 						 				<tr>
