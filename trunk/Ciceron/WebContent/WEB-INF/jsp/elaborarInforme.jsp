@@ -115,7 +115,7 @@
 				});
 				$(this).click(function() {
 					var id = $(this).attr('id').split('_')[1];
-					if (confirm('¿Desea realmente eliminar este bloque y todos sus puntos?')) {
+					if (confirm('¿Desea realmente eliminar este punto?')) {
 						location.href = '<spring:url value = "/app/informes/elaborarInforme/eliminarLineaInforme/"/>'+id;
 					}
 				});
@@ -133,6 +133,18 @@
 				});
 			});
 			
+			$('.volverInforme').each(function() {
+				$(this).css('cursor', 'pointer');
+				$(this).attr({
+					src : '<spring:url value="/imagenes/boton_volver22.png"/>',
+					title : 'Volver'
+				});
+				$(this).click(function() {
+					var id = $(this).attr('id').split('_')[1];
+					location.href = '<spring:url value="/app/informes"/>';
+				});
+			});
+			
 			$('#borrador').each(function(){
 				$(this).css('cursor','pointer');
 				$(this).attr({
@@ -140,7 +152,8 @@
 				});
 				$(this).click(function(){
 					var url = '<spring:url value="/app/informes/elaborarInforme/generarBorrador/${informe.id}/"/>';
-					showPdf(url);
+// 					showPdf(url);
+					window.open(url,'_blank','toolbar=0,location=0,directories=0,status=1,menubar=1,scrollbars=1,resizable=1,top=5,left=0,width='+(screen.width-10)+',height='+(screen.height-120));
 				});
 			});
 			
@@ -202,6 +215,34 @@
 				});
 			});
 			
+			$('.guardar').each(function() {
+	 			$(this).css('cursor', 'pointer');
+	 			$(this).attr({
+	 				src : '<spring:url value="/imagenes/boton_guardar.png"/>',
+	 				title : 'Guardar'
+	 			});
+	 			$(this).click(function() {
+	 				$(this).parents('form').submit();
+	 			});
+	 		});
+			
+			$('.subirDocumento').each(function() {
+	 			$(this).css('cursor', 'pointer');
+	 			$(this).attr({
+	 				src : '<spring:url value="/imagenes/boton_guardar.png"/>',
+	 				title : 'Guardar'
+	 			});
+	 			$(this).click(function() {
+	 				if(!$(".fichero").val()== "" ){
+	 					if(/\.pdf$/.test($(".fichero").val()) || /\.PDF$/.test($(".fichero").val())){
+	 						$(this).parents('form').submit();
+	 					}else
+	 						alert("El documento debe ser pdf"); 					
+	 				}else
+	 					alert("Debe seleccionar un documento");
+	 			});
+	 		});
+			
 		});
 		</script>
 	</head>
@@ -213,7 +254,7 @@
 			<table class="tabla_busqueda">
 				<thead>
 					<tr>
-						<th colspan="2">
+						<th>
 							Informes
 						</th>
 					</tr>
@@ -221,8 +262,12 @@
 				<tbody>
 					<tr>
 						<td align="right">
-							<img class="volver">
-							<button id="nuevo"> Nuevo</button>
+							<img class="volverInforme">
+							<c:choose>
+								<c:when test="${estado=='NO_GENERADO'}">
+									<button id="nuevo"> Nuevo</button>
+								</c:when>
+							</c:choose>
 						</td>
 					</tr>
 				</tbody>
@@ -230,92 +275,92 @@
 		</div>
 		<br>
 		<div>
-		<form action="${context}/informes/elaborarInforme/guardar" method="POST">
-			<input type="hidden" name="id" class="id" />
-			<input type="hidden" name="idInforme" value="${informe.id}"/>
-			<table class="tabla_busqueda" id="tabla_elabora_informe" style="display: none;">
-				<thead>
-					<tr>
-						<th colspan="13">
-							Elaborar informe
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td width="10px">&nbsp;</td>
-						<td width="80px" align="right">
-							Tipología:
-						</td>
-						<td width="10px">&nbsp;</td>
-						<td width="100px">
-							<select class="tipologia">
-								<option value="">-- Seleccione tipología</option>
-								<c:forEach var="tipologia" items="${tipologias}">
-								<option value="${tipologia.id}">${tipologia.descripcion}</option>
-								</c:forEach>	
-							</select>
-						</td>
-						<td width="20px">&nbsp;</td>
-						<td width="80px" align="right">
-							Bloque:
-						</td>
-						<td width="10px">&nbsp;</td>
-						<td width="100px">
-							<select class="bloque">
-								<option value="">-- Seleccione bloque</option>
-							</select>
-						</td>
-						<td width="20px">&nbsp;</td>
-						<td width="80px" align="right">
-							Punto:
-						</td>
-						<td width="10px">&nbsp;</td>
-						<td width="100px">
-							<select class="punto" name="idPunto" style="width: 200px;">
-								<option value="">-- Seleccione punto</option>
-							</select>
-						</td>
-						<td width="10px">&nbsp;</td>
-					</tr>
-					<tr>
-						<td>&nbsp;</td>
-						<td align="right">
-							Detalle: 
-						</td>
-						<td>&nbsp;</td>
-						<td colspan="5" rowspan="5">
-							<textarea name="texto" rows="6" cols="60" class="texto"></textarea>
-						</td>
-						<td>&nbsp;</td>
-						<td align="right">
-							Nombre: 
-						</td>
-						<td>&nbsp;</td>
-						<td rowspan="2">
-							<textarea rows="2" cols="25" class="descripcionPunto" name="descripcionPunto"></textarea>
-						</td>
-						<td>&nbsp;</td>
-					</tr>
-					<tr>
-						<td>&nbsp;</td>
-					</tr>
-					<tr>
-						<td colspan="10" align="right">Orden:</td>
-						<td>&nbsp;</td>
-						<td>
-							<input type="text" class="ordenPunto" name="ordenPunto" size="3" />
-					</tr>
-					
-					<tr>
-						<td colspan="12" align="right">
-							<img class="volverElaborarInforme"/> <img class="limpiar"/> <img class="guardar"> 
-						</td>
-					</tr>
-										
-				</tbody>
-			</table>
-		</form>
+			<form action="${context}/informes/elaborarInforme/guardar" method="POST">
+				<input type="hidden" name="id" class="id" />
+				<input type="hidden" name="idInforme" value="${informe.id}"/>
+				<table class="tabla_busqueda" id="tabla_elabora_informe" style="display: none;">
+					<thead>
+						<tr>
+							<th colspan="13">
+								Elaborar informe
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td width="10px">&nbsp;</td>
+							<td width="80px" align="right">
+								Tipología:
+							</td>
+							<td width="10px">&nbsp;</td>
+							<td width="100px">
+								<select class="tipologia">
+									<option value="">-- Seleccione tipología</option>
+									<c:forEach var="tipologia" items="${tipologias}">
+									<option value="${tipologia.id}">${tipologia.descripcion}</option>
+									</c:forEach>	
+								</select>
+							</td>
+							<td width="20px">&nbsp;</td>
+							<td width="80px" align="right">
+								Bloque:
+							</td>
+							<td width="10px">&nbsp;</td>
+							<td width="100px">
+								<select class="bloque">
+									<option value="">-- Seleccione bloque</option>
+								</select>
+							</td>
+							<td width="20px">&nbsp;</td>
+							<td width="80px" align="right">
+								Punto:
+							</td>
+							<td width="10px">&nbsp;</td>
+							<td width="100px">
+								<select class="punto" name="idPunto" style="width: 200px;">
+									<option value="">-- Seleccione punto</option>
+								</select>
+							</td>
+							<td width="10px">&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+							<td align="right">
+								Detalle: 
+							</td>
+							<td>&nbsp;</td>
+							<td colspan="5" rowspan="5">
+								<textarea name="texto" rows="6" cols="60" class="texto"></textarea>
+							</td>
+							<td>&nbsp;</td>
+							<td align="right">
+								Nombre: 
+							</td>
+							<td>&nbsp;</td>
+							<td rowspan="2">
+								<textarea rows="2" cols="25" class="descripcionPunto" name="descripcionPunto"></textarea>
+							</td>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td colspan="10" align="right">Orden:</td>
+							<td>&nbsp;</td>
+							<td>
+								<input type="text" class="ordenPunto" name="ordenPunto" size="3" />
+						</tr>
+						
+						<tr>
+							<td colspan="12" align="right">
+								<img class="volverElaborarInforme"/> <img class="limpiar"/> <img class="guardar"> 
+							</td>
+						</tr>
+											
+					</tbody>
+				</table>
+			</form>
 		</div>
 <!-- TABLA OCULTA DE LA CONSULTA SOBRE LOS PUNTOS DEL INFORME -->
 		<div>
@@ -334,52 +379,50 @@
 		</div>
 		<br>
 		<div>
-			<c:if test="${!empty listaPuntosInforme}">
-				<table class="tabla_busqueda">
-					<thead>
-						<tr>
-							<th colspan="2">
-								Informe
-								<c:choose>
-									<c:when test="${estado=='NO_GENERADO'}">no generado</c:when>
-									<c:when test="${estado=='PENDIENTE_ENVIO'}">pendiente de envio a Portafirma</c:when>
-									<c:when test="${estado=='ENVIADO'}">enviado a portafirma</c:when>
-									<c:when test="${estado=='FIRMADO'}">firmado</c:when>
-									<c:when test="${estado=='DEVUELTO'}">devuelto</c:when>
-								</c:choose>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td align="right">
-								<c:choose>
-									<c:when test="${estado=='NO_GENERADO'}">
-										<button id="borrador">Borrador</button>
-										<button id="report">Generar</button>
-									</c:when>
-									<c:when test="${estado=='PENDIENTE_ENVIO'}">
-										<button id="visualizar">Visualizar</button>
-										<button id="sustituir">Sustituir</button>
-										<button id="enviar">Enviar a P.F.</button>
-										<button id="eliminar">Eliminar</button>
-									</c:when>
-									<c:when test="${estado=='ENVIADO'}">
-										<button id="visualizar">Visualizar</button>
-									</c:when>
-									<c:when test="${estado=='FIRMADO'}">
-										<button id="visualizar">Visualizar</button>
-									</c:when>
-									<c:when test="${estado=='DEVUELTO'}">
-										<button id="visualizar">Visualizar</button>
-										<button id="eliminar">Eliminar</button>
-									</c:when>
-								</c:choose>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</c:if>
+			<table class="tabla_busqueda">
+				<thead>
+					<tr>
+						<th>
+							Informe
+							<c:choose>
+								<c:when test="${estado=='NO_GENERADO'}">no generado</c:when>
+								<c:when test="${estado=='PENDIENTE_ENVIO'}">pendiente de envio a Portafirma</c:when>
+								<c:when test="${estado=='ENVIADO'}">enviado a portafirma</c:when>
+								<c:when test="${estado=='FIRMADO'}">firmado</c:when>
+								<c:when test="${estado=='DEVUELTO'}">devuelto</c:when>
+							</c:choose>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td align="right">
+							<c:choose>
+								<c:when test="${estado=='NO_GENERADO'}">
+									<button id="borrador">Borrador</button>
+									<button id="report">Generar</button>
+								</c:when>
+								<c:when test="${estado=='PENDIENTE_ENVIO'}">
+									<button id="visualizar">Visualizar</button>
+									<button id="sustituir">Sustituir</button>
+									<button id="enviar">Enviar a P.F.</button>
+									<button id="eliminar">Eliminar</button>
+								</c:when>
+								<c:when test="${estado=='ENVIADO'}">
+									<button id="visualizar">Visualizar</button>
+								</c:when>
+								<c:when test="${estado=='FIRMADO'}">
+									<button id="visualizar">Visualizar</button>
+								</c:when>
+								<c:when test="${estado=='DEVUELTO'}">
+									<button id="visualizar">Visualizar</button>
+									<button id="eliminar">Eliminar</button>
+								</c:when>
+							</c:choose>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 		
  <!-- Sustuir informe -->
@@ -390,11 +433,11 @@
                         <tr>
                             <td>Nuevo archivo:</td>
                             <td>
-                                <input type="file" name="fichero"/>
+                                <input type="file" name="fichero" class="fichero"/>
                             </td>
                             <td width="15px">&nbsp;</td>
                             <td>
-                            	<img class="guardar"/>
+                            	<img class="subirDocumento"/>
                             </td>
                         </tr>
                     </tbody>
@@ -402,6 +445,7 @@
              </form>
              <br/>
         </div>
+         
         
  <!-- Enviar informe a portafirma -->
  		<div id="enviarInforme" title="Enviar informe" class="formularioOculto">
@@ -411,13 +455,11 @@
  						<td>Firmante</td>
  						<td>
  							<select name="firmante" >
- 				<!-- Crear el selec con los nombres de los firmantes -->				
+ 				<!-- Crear el select con los nombres de los firmantes -->				
  								<option value="">-- Seleccione firmante</option>
 								<c:forEach var="firmante" items="${firmantes}">
-								<option value="${firmante.dni}">${firmante.nombre}</option>
+									<option value="${firmante.dni}">${firmante.nombre}</option>
 								</c:forEach>
- 							
- 							
  							</select>
  						</td>
  						<td width="15px">&nbsp;</td>

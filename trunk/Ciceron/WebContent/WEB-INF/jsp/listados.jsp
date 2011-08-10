@@ -26,7 +26,19 @@
 					});
 					$(this).click(function(){
 						var id = $(this).attr('id').split('_')[1];
-						alert("Implementar");
+						location.href = '<spring:url value = "/app/excel/"/>'+id;
+					});
+				});
+				
+				$('.volverMenu').each(function() {
+					$(this).css('cursor', 'pointer');
+					$(this).attr({
+						src : '<spring:url value="/imagenes/boton_volver22.png"/>',
+						title : 'Volver sin guardar'
+					});
+					$(this).click(function() {
+						var id = $(this).attr('id').split('_')[1];
+						location.href = '<spring:url value="/app/menu"/>';
 					});
 				});
 				
@@ -38,7 +50,7 @@
 			<spring:url value="/app" />
 		</c:set>
 		<div align="right">
-				<img class="volver">
+				<img class="volverMenu">
 		</div>
 		<display:table name="listaSolicitudes" uid="solicitudes" pagesize="14" requestURI="${context}/listados">
 			<display:column title="Listados" property="descripcion"/>

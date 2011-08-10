@@ -311,5 +311,42 @@
                <columnOverride column="PS_TIPO" property="idTipo"/>
         </table>
         
+        <table schema="CONTA" tableName="ENTIDADES" domainObjectName="Entidades"
+               enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               enableInsert="false" enableUpdateByExample="false"
+               enableUpdateByPrimaryKey="false">
+               <columnRenamingRule searchString="^EN_" replaceString="" />
+        </table>
+        
+        <table tableName="CONTRATOS" domainObjectName="Contratos"
+               enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               enableInsert="false" enableUpdateByExample="false"
+               enableUpdateByPrimaryKey="false">
+               <columnRenamingRule searchString="^CON_" replaceString="" />
+               <columnOverride column="CON_EXP_ID" property="idExpediente"/>
+               <columnOverride column="CON_EN_ID" property="idEntidad"/>
+               <columnOverride column="CON_F_CIERRE" property="fechaCierre"/>
+        </table>
+        
+        <table tableName="AJ_CONTRATOS_V" domainObjectName="ContratosV"
+               enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               enableInsert="false" enableUpdateByExample="false"
+               enableUpdateByPrimaryKey="false">
+               <columnOverride column="CON_ID" property="idContrato"/>
+               <columnOverride column="CON_EXP_ID" property="idExpediente"/>
+               <columnOverride column="CON_DESCRIPCION" property="descripcion"/>
+               <columnOverride column="EXP_CODIGO" property="codigo"/>
+               <columnOverride column="EXP_SECUENCIA" property="secuencia"/>
+               <columnOverride column="EN_ID" property="idEntidad"/>
+               <columnOverride column="EN_CIF" property="cif"/>
+               <columnOverride column="EN_NOMBRE" property="nombre"/>
+        </table>
+        
+        <table tableName="AJ_ARCHIVO" domainObjectName="Archivo">
+               <generatedKey column="AR_ID" sqlStatement="SELECT AJ_ARCHIVO_S1.nextval FROM DUAL" identity="false" type="pre"/>
+               <columnRenamingRule searchString="^AR_" replaceString="" />
+               <columnOverride column="AR_ES_ID" property="idArchivo"/>
+        </table>
+        
 	</context>
 </generatorConfiguration>
