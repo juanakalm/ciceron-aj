@@ -5,7 +5,7 @@ table.displaytag{
 	border-collapse: collapse;
 	margin-left: auto;
     margin-right: auto;
-    font-size: 12px;
+    font-size: 11px;
     font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
 }
 
@@ -21,7 +21,7 @@ table.displaytag th {
     text-align: left;
     text-decoration: none;
     font-family: Verdana;
-    font-size: 12px;
+    font-size: 11px;
     color: purple;
    
 }
@@ -29,7 +29,7 @@ table.displaytag th {
 table.displaytag td {
     padding: 5px;
     text-align: left;
-    font-size: 12px;
+    font-size: 11px;
     font-family: Verdana;
 }
 
@@ -39,7 +39,7 @@ table.displaytag th.sortable {
     background-position: right center;
     color: #FFFFFF;
     text-decoration: none;
-    font-size: 12px;
+    font-size: 11px;
     font-family: Verdana;
 }
 
@@ -67,6 +67,6 @@ table.displaytag tbody tr.hover {
 }
 
 .pagebanner, .pagelinks{
-	font-size: 12px;
+	font-size: 11px;
 }
 

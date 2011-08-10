@@ -104,9 +104,15 @@
 						 					</td>
 						 				</tr>
 						 				<tr>
+						 					<td colspan="2">&nbsp;</td>
+						 				</tr>
+						 				<tr>
 						 					<td align="center" colspan="2" style="color:red">
 							 					<c:if test="${not empty mensaje}">
 							 						<c:out value="${mensaje}"/>
+							 					</c:if>
+							 					<c:if test="${empty mensaje}">
+							 						&nbsp;
 							 					</c:if>
 							 				</td>
 						 				</tr>

@@ -30,7 +30,7 @@ public class ReportService
 		key = properties.getProperty("report.key");
 	}
 
-	private String getUrlReport(String nombreReport, String... params)
+	public String getUrlReport(String nombreReport, String... params)
 	{
 		if(params.length%2 !=0)
 		{
@@ -70,7 +70,6 @@ public class ReportService
 		URL url = new URL(urlReport);
 		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 		fichero = leerContenido(conn.getInputStream());
-		
 		return fichero;
 	}
 	

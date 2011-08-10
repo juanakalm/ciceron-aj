@@ -24,6 +24,11 @@
 					location.href = url;
 				});
 				
+				$('#informes tbody tr button.observaciones, #informesMod tbody tr button.observaciones').click(function(){
+					var id = $(this).parents('tr').attr('id').split('_')[1];
+					window.open('<spring:url value = "/app/informes/observaciones/"/>'+id, 'incorporardocumentos', 'status=yes,scrollbars=no,width=700,height=400,top=150,left=270');
+				});
+				
 				$('.volverMenu').each(function() {
 					$(this).css('cursor', 'pointer');
 					$(this).attr({
@@ -34,6 +39,22 @@
 						location.href = '<spring:url value="/app/menu"/>';
 					});
 				});
+				
+				$('.buscarInforme').each(function(){
+					$(this).css('cursor','pointer');
+					$(this).attr({
+						src: '<spring:url value = "/imagenes/boton_buscar.png"/>',
+						title: 'Buscar'
+					});
+					$(this).click(function(){
+						if(/^\d*\.?\d+$/.test($("#secuencia").val()) || $("#secuencia").val()== "" ){
+							$(this).parents('form').submit();
+						}else
+							alert("El campo Secuencia debe ser numérico");
+					});
+				});
+				
+				
 				
 			});
 		</script>
@@ -56,6 +77,7 @@
 						<td align="right" width="200px">Secuencia: </td>
 						<td width="15px">&nbsp;</td>
 						<td width="50px"><form:input path="secuencia" cssStyle="width: 50px;"/></td>
+						<td colspan="4">&nbsp;</td>
 					</tr>
 					<tr>
 						<td align="right">Código: </td>
@@ -79,7 +101,7 @@
 					</tr>
 					<tr>
 						<td colspan="7" align="right">
-							<img class="volverMenu"/> <img class="limpiar"/><img class="buscar">
+							<img class="volverMenu"/> <img class="limpiar"/><img class="buscarInforme">
 						</td>
 					</tr>
 				</tbody>
@@ -98,10 +120,10 @@
 				<display:column property="version" title="Versión" sortable="true"/>
 				<display:column property="fPeticion" title="Fecha Petición" sortable="true" decorator="es.ise.ciceron.displaytag.decorators.ShortDateDecorator"/>
 				<display:column class="acciones" >
-					<button style="width: 90px" class="informe">Informe</button>
+					<button style="width: 60px" class="informe">Informe</button>
 				</display:column>
 				<display:column class="acciones">
-					<button style="width: 90px">Observaciones</button>
+					<button style="width: 90px" class="observaciones" id="${informes.idExpediente}">Observaciones</button>
 				</display:column>
 				<display:caption style="color: purple">Informes Jurídicos Pendientes</display:caption>
 			</display:table>
@@ -118,7 +140,7 @@
 				<display:column property="proveedor" title="Proveedor" sortable="true"/>
 				<display:column property="fPeticion" title="Fecha Petición" sortable="true" decorator="es.ise.ciceron.displaytag.decorators.ShortDateDecorator"/>
 				<display:column class="acciones">
-					<button style="width: 95px" class="informe">Informe</button>
+					<button style="width: 60px" class="informe">Informe</button>
 				</display:column>
 				<display:column class="acciones">
 					<button style="width: 90px">Observaciones</button>

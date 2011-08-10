@@ -9,8 +9,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.PropertyBatchUpdateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -95,9 +95,11 @@ public class InformesController {
 			{
 				puntos.add(p.getId());
 			}
-			if(genericDAO.list(TextoInforme.class, new Property ("idPunto", puntos, Operator.IN)).size()>0)
-			{
-				mav.addObject("comprobarBloqueConPunto","No puede eliminarse el bloque porque tiene puntos que han sido usados en algún Informe");
+			if(!puntos.isEmpty()){
+				if(genericDAO.list(TextoInforme.class, new Property ("idPunto", puntos, Operator.IN)).size()>0)
+				{
+					mav.addObject("comprobarBloqueConPunto","No puede eliminarse el bloque porque tiene puntos que han sido usados en algún Informe");
+				}
 			}
 			return mav;
 		}
@@ -121,7 +123,7 @@ public class InformesController {
 	}
 	
 	@RequestMapping	
-	public ModelAndView model(@ModelAttribute("busqueda") BusquedaInforme busqueda, BindingResult result){
+	public ModelAndView model(@ModelAttribute("busqueda") BusquedaInforme busqueda, BindingResult result, HttpSession session){
 		ModelAndView mav = new ModelAndView("informes");
 		
 		GenericDAO.Property[] propiedades = {};
@@ -132,12 +134,12 @@ public class InformesController {
 			List<GenericDAO.Property> listaPropiedades = new ArrayList<GenericDAO.Property>();
 			List<GenericDAO.Property> listaPropiedadesMod = new ArrayList<GenericDAO.Property>();
 			if(busqueda.getCodigoExpediente() != null && !busqueda.getCodigoExpediente().isEmpty()){
-				listaPropiedades.add(new GenericDAO.Property("codigoExpediente", String.format("%%%s%%", busqueda.getCodigoExpediente()), GenericDAO.Property.Operator.LIKE));
-				listaPropiedadesMod.add(new GenericDAO.Property("codigoExpediente", String.format("%%%s%%", busqueda.getCodigoExpediente()), GenericDAO.Property.Operator.LIKE));
+				listaPropiedades.add(new GenericDAO.Property("codigoExpediente", String.format("%%%s%%", busqueda.getCodigoExpediente().toUpperCase()), GenericDAO.Property.Operator.LIKE));
+				listaPropiedadesMod.add(new GenericDAO.Property("codigoExpediente", String.format("%%%s%%", busqueda.getCodigoExpediente().toUpperCase()), GenericDAO.Property.Operator.LIKE));
 			}
 			if(busqueda.getDescripcionExpediente() !=null && !busqueda.getDescripcionExpediente().isEmpty()){
-				listaPropiedades.add(new GenericDAO.Property("descripcionExpediente", String.format("%%%s%%", busqueda.getDescripcionExpediente()), GenericDAO.Property.Operator.LIKE));
-				listaPropiedadesMod.add(new GenericDAO.Property("descripcionContrato", String.format("%%%s%%", busqueda.getDescripcionExpediente()), GenericDAO.Property.Operator.LIKE));
+				listaPropiedades.add(new GenericDAO.Property("descripcionExpediente", String.format("%%%s%%", busqueda.getDescripcionExpediente().toUpperCase()), GenericDAO.Property.Operator.LIKE));
+				listaPropiedadesMod.add(new GenericDAO.Property("descripcionContrato", String.format("%%%s%%", busqueda.getDescripcionExpediente().toUpperCase()), GenericDAO.Property.Operator.LIKE));
 			}
 			if(busqueda.getIdUnidadContratacion() !=null){
 				listaPropiedades.add(new GenericDAO.Property("idUnidadContratacion", busqueda.getIdUnidadContratacion()));
@@ -158,6 +160,12 @@ public class InformesController {
 		{
 			mav.addObject("listaInformes",genericDAO.list(InformeJuridico.class, propiedades));
 			mav.addObject("listaInformesMod",genericDAO.list(InformeJuridicoModificado.class, propiedadesMod));
+		}
+		
+		if(session.getAttribute("mensaje") != null)
+		{
+			mav.addObject("mensaje", session.getAttribute("mensaje"));
+			session.removeAttribute("mensaje");
 		}
 		
 		return mav;
@@ -224,11 +232,14 @@ public class InformesController {
 	}
 	
 	@RequestMapping("/elaborarInforme/generarBorrador/{idInforme}")
-	public void generarBorrador(@PathVariable BigDecimal idInforme, HttpServletResponse response) throws IOException, SAXException
+	public ModelAndView generarBorrador(@PathVariable BigDecimal idInforme, HttpServletResponse response) throws IOException, SAXException
 	{
-//		TiposDocumentos report = genericDAO.get(TiposDocumentos.class, new BigDecimal(7));
-		reportService.sendPdfToBrowser(reportService.getReport("AJ_INFORME", "P_INF_ID", idInforme.toString()), response);
+		String url = reportService.getUrlReport("AJ_INFORME", "P_INF_ID", idInforme.toString());
+		return new ModelAndView("redirect:"+url);
+//		reportService.sendPdfToBrowser(reportService.getReport("AJ_INFORME", "P_INF_ID", idInforme.toString()), response);
 	}
+	
+	
 	
 	@RequestMapping(value="/elaborarInforme/generarReport/{idInforme}")
 	public ModelAndView generarReport(@PathVariable BigDecimal idInforme, @SessionParam Usuario usuario)throws IOException, SAXException
@@ -262,22 +273,23 @@ public class InformesController {
 	}
 	
 	@RequestMapping("/elaborarInforme/sustituir/{idInforme}")
-	public ModelAndView sustituirInforme(@PathVariable BigDecimal idInforme, @RequestParam MultipartFile fichero, @SessionParam Usuario usuario) throws IOException
+	public ModelAndView sustituirInforme(@PathVariable BigDecimal idInforme, @RequestParam MultipartFile fichero, @SessionParam Usuario usuario, HttpSession session) throws IOException
 	{
 		Informe informe = genericDAO.get(Informe.class, idInforme);
 		ModelAndView mav = new ModelAndView("redirect:/app/informes/elaborarInforme/"+informe.getIdExpediente());
-		if(fichero != null && fichero.getContentType().equals("application/pdf"))
-		{
-			Documentos doc = genericDAO.get(Documentos.class, informe.getIdDocumento());
-			Fichero fich = new Fichero(fichero.getOriginalFilename());
-			doc.setFichero(fichero.getBytes());
-			doc.setNombreFichero(fich.getNameWithoutExtension());
-			doc.setExtension(fich.getExtension());
-			doc.setActualizacion(new Date(), usuario);
-			genericDAO.insertOrUpdateWithBlob(Documentos.class, doc);
-		}else
-		{
-			mav.addObject("mensaje", "Seleccione un fichero .pdf");
+		if(fichero != null ){
+			if(fichero.getContentType().equals("application/pdf")){
+				Documentos doc = genericDAO.get(Documentos.class, informe.getIdDocumento());
+				Fichero fich = new Fichero(fichero.getOriginalFilename());
+				doc.setFichero(fichero.getBytes());
+				doc.setNombreFichero(fich.getNameWithoutExtension());
+				doc.setExtension(fich.getExtension());
+				doc.setActualizacion(new Date(), usuario);
+				genericDAO.insertOrUpdateWithBlob(Documentos.class, doc);
+			}
+//			else{
+//				session.setAttribute("mensaje", "Seleccione un fichero .pdf");
+//			}
 		}
 		return mav;
 	}
@@ -307,6 +319,14 @@ public class InformesController {
 		doc.setFechaEnvio(new Date());
 		doc.setActualizacion(new Date(), usuario);
 		genericDAO.insertOrUpdate(Documentos.class, doc);
+		return mav;
+	}
+	
+	@RequestMapping("/observaciones/{idExpediente}")
+	public ModelAndView observacion(@PathVariable BigDecimal idExpediente, @SessionParam Usuario usuario){
+		ModelAndView mav = new ModelAndView("observaciones");
+		Expedientes exp = genericDAO.get(Expedientes.class, idExpediente);
+		mav.addObject("expediente", exp);
 		return mav;
 	}
 

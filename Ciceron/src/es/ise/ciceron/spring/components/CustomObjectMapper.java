@@ -10,7 +10,7 @@ public class CustomObjectMapper extends ObjectMapper
 	{
 		super();
 		//se formatea las fechas al formato que acepta el plugin de javascript: 2009-12-18 10:54:50.546
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		getSerializationConfig().setDateFormat(sdf);
 	}
 }

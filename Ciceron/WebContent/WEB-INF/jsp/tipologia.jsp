@@ -65,18 +65,18 @@
 		});
 		
 		$('.editarBloque').click(function(){
-			var id = $(this).attr("id");
-			var arrayId = id.split("_");
-			var idBloque = arrayId[1];
-			var idPunto = arrayId[2];
-			var orden = $('#orden_'+idBloque+"_"+idPunto).val();
-			var tipo = $('#tipo_'+idBloque+"_"+idPunto).val();
-			var descripcion = $('#descripcion_'+idBloque+"_"+idPunto).val();
-			$("#editaTipologia").val(tipo);
-			$("#editaOrden").val(orden);
-			$("#editaDescripcion").val(descripcion);
-			$('#editaIdBloque').val(idBloque);
-			$('#tabla_edita_bloque').show();
+				var id = $(this).attr("id");
+				var arrayId = id.split("_");
+				var idBloque = arrayId[1];
+				var idPunto = arrayId[2];
+				var orden = $('#orden_'+idBloque+"_"+idPunto).val();
+				var tipo = $('#tipo_'+idBloque+"_"+idPunto).val();
+				var descripcion = $('#descripcion_'+idBloque+"_"+idPunto).val();
+				$("#editaTipologia").val(tipo);
+				$("#editaOrden").val(orden);
+				$("#editaDescripcion").val(descripcion);
+				$('#editaIdBloque').val(idBloque);
+				$('#tabla_edita_bloque').show();
 		});
 		
 		$('#bloques img.eliminarBloque').each(function() {
@@ -133,16 +133,40 @@
 			});
 		});
 
-		$('.volverMenu').each(function() {
+		$('.guardar').each(function() {
 			$(this).css('cursor', 'pointer');
 			$(this).attr({
-				src : '<spring:url value="/imagenes/boton_atras.png"/>',
-				title : 'Volver'
-			});
-			$(this).click(function() {
-				location.href = '<spring:url value="/app/menu"/>';
+				src : '<spring:url value="/imagenes/boton_guardar.png"/>',
+				title : 'Guardar'
 			});
 		});
+		
+		
+		$('#tabla_edita_bloque .guardar').click(function(){
+			if($("#editaTipologia").val()!="" && $("#editaDescripcion").val()!="" && $("#editaOrden").val()!="") {
+				if(/^\d*\.?\d+$/.test($("#editaOrden").val())){
+					$(this).parents('form').submit();
+				}else
+					alert("El campo 'Orden del bloque' debe ser numérico");
+				
+			} else {
+				alert("Los campos no pueden estar vacios");
+			}
+		});
+		
+		
+		$('#tabla_edita_punto .guardar').click(function() {
+			if($("#editaBloque").val()!="" && $("#editaDescripcionCorta").val()!="" && $("#editaOrdenPunto").val()!="") {
+				if(/^\d*\.?\d+$/.test($("#editaOrdenPunto").val())){
+					$(this).parents('form').submit();
+				}else
+					alert("El campo 'Orden del punto' debe ser numérico");
+				
+			} else {
+				alert("Los campos no pueden estar vacios");
+			}
+		});
+		
 	});
 		
 </script>
@@ -238,7 +262,7 @@
 		<tr>
 			<td align="right">Descripción larga:</td>
 <!-- 			<td><input type="text" id="editaDescripcionLarga"/></td> -->
-			<td colspan="5"><textarea rows="3" cols="95%" id="editaDescripcionLarga" name="descripcionLarga"></textarea></td>
+			<td colspan="5"><textarea rows="3" cols="95%" style="font-family: verdana;" id="editaDescripcionLarga" name="descripcionLarga"></textarea></td>
 		</tr>
 		<tr>
 			<td colspan="5">&nbsp;</td>

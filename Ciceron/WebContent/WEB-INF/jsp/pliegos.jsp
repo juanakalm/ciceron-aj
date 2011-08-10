@@ -45,6 +45,7 @@
 					$('#tabla_elaborar_pliego .fichero').show();
 					$('.tabla_busqueda').show();
 					$('#tabla_elaborar_pliego .nombre').focus();
+					$('#sustituirPliego').hide();
 				});
 			});
 			
@@ -151,6 +152,7 @@
 				$('#tabla_elaborar_pliego th').text('Editar pliego');
 				$('#tabla_elaborar_pliego .fichero').hide();
 				$('#tabla_elaborar_pliego').show();
+				$('#sustituirPliego').hide();
 			});
 			
 			$('.guardar').each(function() {
@@ -160,9 +162,39 @@
 					title : 'Guardar'
 				});
 				$(this).click(function() {
-					$('#tabla_elaborar_pliego .fichero').show();
-					$('#tabla_elaborar_pliego :disabled').attr("disabled",false);
-					$(this).parents('form').submit();
+					if($(".nombre").val()!="" ){
+						if($(".version").val()!=""){
+							if(/^\d*\.?\d+$/.test($(".version").val())){
+								if($(".fichero").val()!= ""){
+									$(this).parents('form').submit();
+									$('#tabla_elaborar_pliego .fichero').show();
+									$('#tabla_elaborar_pliego :disabled').attr("disabled",false);
+								}else
+									alert("Debe de seleccionar un Documento");
+							}else
+								alert("El campo 'Versión' debe ser numérico");
+						}else
+							alert("El campo Versión no puede estar vacio");
+					} else 
+						alert("El campo Nombre no pueden estar vacio");
+				});
+			});
+			
+			$('.subirDocumento').each(function() {
+				$(this).css('cursor', 'pointer');
+				$(this).attr({
+					src : '<spring:url value="/imagenes/boton_guardar.png"/>',
+					title : 'Guardar'
+				});
+				$(this).click(function() {
+					if($("#file").val()!= ""){
+						if(/\.pdf$/.test($("#file").val()) || /\.PDF$/.test($("#file").val())){
+	 						$(this).parents('form').submit();
+	 						$('#sustituirPliego').hide();
+	 					}else
+	 						alert("El documento debe ser pdf"); 					
+					} else 
+						alert("Debe seleccionar un Documento");
 				});
 			});
 			
@@ -288,11 +320,11 @@
 					<tr>
 						<td>Nuevo pliego:</td>
 						<td> 
-							<input type="file" name="file"/>
+							<input type="file" name="file" id="file"/>
 						</td>
 						<td width="15px">&nbsp;</td>
 						<td>
-							<img class="guardar">
+							<img class="subirDocumento">
 						</td>
 					</tr>				
 				</table>
