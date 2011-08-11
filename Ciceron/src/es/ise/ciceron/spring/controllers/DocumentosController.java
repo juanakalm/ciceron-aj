@@ -75,7 +75,19 @@ public class DocumentosController {
 			}
 			if(busqueda.getSecuencia() !=null){
 				listaPropiedades.add(new GenericDAO.Property("secuenciaOperacion", busqueda.getSecuencia()));
-			}	
+			}
+			if(busqueda.getCifEntidad() != null && !busqueda.getCifEntidad().isEmpty()){
+				listaPropiedades.add(new GenericDAO.Property("cif", String.format("%%%s%%", busqueda.getCifEntidad().toUpperCase()), GenericDAO.Property.Operator.LIKE));
+			}
+			if(busqueda.getEntidadTerceros() !=null && !busqueda.getEntidadTerceros().isEmpty()){
+				listaPropiedades.add(new GenericDAO.Property("nombreTercerosFormato", String.format("%%%s%%", busqueda.getEntidadTerceros().toUpperCase()), GenericDAO.Property.Operator.LIKE));
+			}
+			if(busqueda.getCifEntidadTerceros() != null && !busqueda.getCifEntidadTerceros().isEmpty()){
+				listaPropiedades.add(new GenericDAO.Property("cifEntidadTerceros", String.format("%%%s%%", busqueda.getCifEntidadTerceros().toUpperCase()), GenericDAO.Property.Operator.LIKE));
+			}
+			if(busqueda.getEstadoTramite() !=null){
+				listaPropiedades.add(new GenericDAO.Property("estado",busqueda.getEstadoTramite()));
+			}
 			
 			propiedades = listaPropiedades.toArray(new GenericDAO.Property[]{});
 		}

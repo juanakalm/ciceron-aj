@@ -114,6 +114,8 @@
 					$('.fecha').val(data.documentosES.fecha);
 					$('.otrasUnidades').val(data.documentosES.idOtraUnidad);
 					$('.observacion').val(data.documentosES.observacion);
+					$('.terceros').val(data.documentosES.nombreEntidadTerceros);
+					$('.cifTerceros').val(data.documentosES.cifEntidadTerceros);
 					if(data.documentosES.tipoEntradaSalida == 'E'){
 						$('.tipoE').attr('checked',true);
 					}else if(data.documentosES.tipoEntradaSalida == 'S'){
@@ -121,6 +123,14 @@
 					}else{
 						$('.tipoE').attr('checked',false);
 						$('.tipoS').attr('checked',false);
+					}
+					if(data.documentosES.estado == 'Tramite'){
+						$('.estadoT').attr('checked',true);
+					}else if(data.documentosES.estado == 'Concluido'){
+						$('.estadoC').attr('checked',true);
+					}else{
+						$('.estadoT').attr('checked',false);
+						$('.estadoC').attr('checked',false);
 					}
 						
 				});
@@ -257,13 +267,27 @@
 					<tr>
 						<td>Descripción: </td>
 						<td colspan="3">
-							<form:input path="descripcionFormato" size="118"/>
+							<form:input path="descripcionFormato" size="115"/>
 						</td>
 					</tr>
 					<tr>
 						<td>Proveedor: </td>
-						<td colspan="3">
-							<form:input path="entidad" size="118"/>
+						<td >
+							<form:input path="entidad" size="61"/>
+						</td>
+						<td>CIF: </td>
+						<td>
+							<form:input path="cifEntidad"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Proveedor Terceros: </td>
+						<td >
+							<form:input path="entidadTerceros" size="61"/>
+						</td>
+						<td>CIF Terceros: </td>
+						<td>
+							<form:input path="cifEntidadTerceros"/>
 						</td>
 					</tr>
 					<tr>
@@ -275,9 +299,10 @@
 									itemValue="id" />
 							</form:select>
 						</td>
-						<td>Expediente: </td>
+						<td>Tipo: </td>
 						<td>
-							<form:input path="codigo"/>
+							<form:radiobutton path="tipoEntradaSalida" value="E" title="Entrada"/>Entrada   
+							<form:radiobutton path="tipoEntradaSalida" value="S" title="Salida"/>Salida
 						</td>
 					</tr>
 					<tr>
@@ -288,9 +313,10 @@
 								<form:options items="${listaUnidades}" itemLabel="descripcion" itemValue="id"/>
 							</form:select>
 						</td>
-						<td>Secuencia: </td>
+						<td>Estado: </td>
 						<td>
-							<form:input path="secuencia" cssStyle="width: 50px;"/>
+							<form:radiobutton path="estadoTramite" value="Tramite" title="En Tramite"/>Tramite
+							<form:radiobutton path="estadoTramite" value="Concluido" title="Concluido"/>Concluido
 						</td>
 					</tr>
 					<tr>
@@ -301,14 +327,17 @@
 								<form:options items="${listaOtrasUnidades}" itemLabel="descripcion" itemValue="id"/>
 							</form:select>
 						</td>
-						<td>Tipo: </td>
+						<td>Secuencia: </td>
 						<td>
-							<form:radiobutton path="tipoEntradaSalida" value="E" title="Entrada"/>Entrada
-							<form:radiobutton path="tipoEntradaSalida" value="S" title="Salida"/>Salida
+							<form:input path="secuencia" cssStyle="width: 50px;"/>
 						</td>
 					</tr>
 					<tr>
-						<td colspan="4" align="right">
+						<td>Expediente: </td>
+						<td>
+							<form:input path="codigo"/>
+						</td>
+						<td colspan="2" align="right">
 							<img class="volverMenu"/> <img class="nuevo_documento"><img class="limpiar"/><img class="buscarDocumento">
 						</td>
 					</tr>
@@ -319,6 +348,8 @@
 			<form action="${context}/documentos/guardar" name="formulario" method="POST" enctype="multipart/form-data">
 				<div>
 					<input type="hidden" name="id" class="idEsDocumento" />
+					<input type="hidden" name="idContrato" id="idContrato"/>
+					<input type="hidden" name="idEntidad" id="idEntidad"/>
 					<table class="tabla_busqueda" id="tabla_nuevo_documento">
 						<thead>
 							<tr>
@@ -332,29 +363,33 @@
 							<tr>
 								<td style="width: 50px">Descripción: </td>
 								<td colspan="5">
-									<input type="text" class="descripcion" name="descripcion" size="112"/>
+									<input type="text" class="descripcion" name="descripcion" size="111"/>
 								</td>
 							</tr>
 							<tr>
 								<td>Contrato: </td>
-								<td colspan="4">
-									<input type="text" id="contrato" name="contrato" size="112" />
+								<td colspan="5">
+									<input type="text" id="contrato" name="contrato" size="111" />
 									<img class="buscarContrato"/>
 									<img class="limpiarFila"/>
-								</td>
-								<td align="left">
-									<input type="hidden" name="idContrato" id="idContrato"/>
 								</td>
 							</tr>
 							<tr>
 								<td>Proveedor: </td>
-								<td colspan="4">
-									<input type="text" id="proveedor" name="proveedor" size="112"/>
+								<td colspan="5">
+									<input type="text" id="proveedor" name="proveedor" size="111"/>
 									<img class="buscarEntidad"/>
 									<img class="limpiarFila"/>
 								</td>
-								<td align="left">
-									<input type="hidden" name="idEntidad" id="idEntidad"/>
+							</tr>
+							<tr>
+								<td>Proveedor Terceros: </td>
+								<td colspan="2">
+									<input type="text" name="terceros" size="58" class="terceros">
+								</td>
+								<td>CIF Terceros: </td>
+								<td>
+									<input type="text" name="cifTerceros" size="18" class="cifTerceros">
 								</td>
 							</tr>
 							<tr>
@@ -368,11 +403,10 @@
 									</select>
 								</td>
 								<td>&nbsp;</td>
-								<td>Tipo: </td>
-								<td>
-									<input type="radio" name="tipo" class="tipo tipoE" value="E"/>Entrada
-									<input type="radio" name="tipo" class="tipo tipoS" value="S"/>Salida
-								</td>
+								<td>ARIES: </td>
+                           		<td>
+                           			<input type="text" name="aries" class="aries" size="18"/>
+                           		</td>	
 								<td>&nbsp;</td>
 							</tr>
 							<tr>
@@ -388,7 +422,7 @@
 								<td>&nbsp;</td>
 								<td>Fecha registro: </td>
 								<td>
-									<input type="text" id="datepicker" class="fecha" style="width: 135px;" name="fecha">
+									<input type="text" id="datepicker" class="fecha" style="width: 143px;" name="fecha">
 								</td>
 								<td>&nbsp;</td>							
 							</tr>
@@ -403,21 +437,25 @@
 									</select>
 								</td>
 								<td>&nbsp;</td>
-								<td>ARIES: </td>
-                           		<td>
-                           			<input type="text" name="aries" class="aries" size="17"/>
-                           		</td>	
+								<td>Tipo: </td>
+								<td>
+									<input type="radio" name="tipo" class="tipo tipoE" value="E"/>Entrada
+									<input type="radio" name="tipo" class="tipo tipoS" value="S"/>Salida
+								</td>
                            		<td>&nbsp;</td>
 							</tr>
 							<tr>
 								<td>Observaciones</td>
-								<td colspan="5" rowspan="4">
-									<textarea rows="4" cols="90" style="font-family: verdana;" name="observacion" class="observacion"></textarea>
+								<td colspan="2" rowspan="3">
+									<textarea rows="4" cols="51" style="font-family: verdana;" name="observacion" class="observacion"></textarea>
+								</td>
+								<td>Estado: </td>
+								<td>
+									<input type="radio" name="estado" class="estado estadoT" value="Tramite"/>Tramite
+									<input type="radio" name="estado" class="estado estadoC" value="Concluido"/>Concluido
 								</td>
 							</tr>
-							<tr>
-								<td>&nbsp;</td>
-							</tr>
+							
 							<tr>
 								<td>&nbsp;</td>
 							</tr>
@@ -440,7 +478,7 @@
 				<display:column title="Proveedor" property="cifnombre"/>
 				<display:column title="Operacion" property="descripcionTipoOperacion"/>
 				<display:column title="Fecha" property="fecha" decorator="es.ise.ciceron.displaytag.decorators.ShortDateDecorator"/>
-				<display:column title="Unidad" property="descUnidadContratacion"/>
+				<display:column title="Estado" property="estado"/>
 				<display:column class="acciones">
 					<img class="sustituirDocumentoLinea" id="sustituirDocumento_${documentos.idEsDocumento}"/>
 				</display:column>

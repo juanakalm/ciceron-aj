@@ -3,6 +3,12 @@
 <html>
 <head>
 <title>Busqueda</title>
+		<style type="text/css">
+ 			table.displaytag tbody tr.hover {
+ 				background-color: inherit;
+ 				cursor: inherit;
+ 			} 
+		</style> 
 <script>
 	$(document).ready(function() {
 		

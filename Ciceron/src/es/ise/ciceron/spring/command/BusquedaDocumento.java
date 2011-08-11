@@ -9,6 +9,7 @@ public class BusquedaDocumento
 	private String codigo;
 	private String entidad;
 	private BigDecimal idEntidad;
+	private String cifEntidad;
 	private BigDecimal idExpediente;
 	private String operacion;
 	private BigDecimal idOperacion;
@@ -18,7 +19,41 @@ public class BusquedaDocumento
 	private BigDecimal idUniExterna;
 	private String descripcionFormato;
 	private String tipoEntradaSalida;
+	private String entidadTerceros;
+	private String cifEntidadTerceros;
+	private String estadoTramite;
 	
+	
+	public String getEstadoTramite()
+	{
+		return estadoTramite;
+	}
+
+	public void setEstadoTramite(String estadoTramite)
+	{
+		this.estadoTramite = estadoTramite;
+	}
+
+	public String getEntidadTerceros()
+	{
+		return entidadTerceros;
+	}
+
+	public void setEntidadTerceros(String entidadTerceros)
+	{
+		this.entidadTerceros = entidadTerceros;
+	}
+
+	public String getCifEntidadTerceros()
+	{
+		return cifEntidadTerceros;
+	}
+
+	public void setCifEntidadTerceros(String cifEntidadTerceros)
+	{
+		this.cifEntidadTerceros = cifEntidadTerceros;
+	}
+
 	private String accion = "";
 	
 	public String getDescripcion()
@@ -31,6 +66,15 @@ public class BusquedaDocumento
 		this.descripcion = descripcion;
 	}
 
+	public String getCifEntidad()
+	{
+		return cifEntidad;
+	}
+
+	public void setCifEntidad(String cif)
+	{
+		this.cifEntidad = cif;
+	}
 
 	public BigDecimal getSecuencia()
 	{

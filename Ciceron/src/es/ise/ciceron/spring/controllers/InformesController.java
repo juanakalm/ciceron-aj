@@ -123,7 +123,7 @@ public class InformesController {
 	}
 	
 	@RequestMapping	
-	public ModelAndView model(@ModelAttribute("busqueda") BusquedaInforme busqueda, BindingResult result, HttpSession session){
+	public ModelAndView model(@ModelAttribute("busqueda") BusquedaInforme busqueda, BindingResult result){
 		ModelAndView mav = new ModelAndView("informes");
 		
 		GenericDAO.Property[] propiedades = {};
@@ -160,12 +160,6 @@ public class InformesController {
 		{
 			mav.addObject("listaInformes",genericDAO.list(InformeJuridico.class, propiedades));
 			mav.addObject("listaInformesMod",genericDAO.list(InformeJuridicoModificado.class, propiedadesMod));
-		}
-		
-		if(session.getAttribute("mensaje") != null)
-		{
-			mav.addObject("mensaje", session.getAttribute("mensaje"));
-			session.removeAttribute("mensaje");
 		}
 		
 		return mav;
