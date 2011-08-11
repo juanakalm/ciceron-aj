@@ -10,12 +10,12 @@
 <title>Ciceron - <decorator:title />
 </title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href="<spring:url value="/estilos/principal.css"/>"
-	rel="stylesheet" type="text/css">
+	<link href="<spring:url value="/estilos/principal.css"/>"
+		rel="stylesheet" type="text/css">
 	<link href="<spring:url value="/estilos/displaytag.css"/>"
-	rel="stylesheet" type="text/css">
+		rel="stylesheet" type="text/css">
 	<link href="<spring:url value="/estilos/ui-lightness/jquery-ui-1.8.14.custom.css"/>"
-	rel="stylesheet" type="text/css">
+		rel="stylesheet" type="text/css">
 <script src="<spring:url value="/scripts/jquery.min.js"/>"></script>
 <script src="<spring:url value="/scripts/jquery-ui-1.8.14.custom.min.js"/>"></script>
 <script type="text/javascript" src="<spring:url value="/scripts/horaActual.js"/>"></script>

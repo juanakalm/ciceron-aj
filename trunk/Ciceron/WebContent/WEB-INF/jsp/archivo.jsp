@@ -1,5 +1,11 @@
 <%@page import="java.util.ArrayList"%>
 <%@ include file="/WEB-INF/includes/taglibs.jsp"%>
+<%
+    response.setHeader("Cache-Control", "no-cache");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", -1);
+    response.setHeader("Cache-Control", "no-store"); //HTTP 1.1
+%>
 
 <html>
 	<head>
@@ -12,11 +18,54 @@
 <!-- 			} -->
 <!-- 		</style> -->
 
-		<link href="<spring:url value="/estilos/displaytag.css"/>"
-			rel="stylesheet" type="text/css">
+		<style type="text/css">
+			div.ui-datepicker{ 
+ 				font-size:12px; 
+			} 
+		</style>
+		
+		
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">	
+			<link href="<spring:url value="/estilos/ui-lightness/jquery-ui-1.8.14.custom.css"/>"
+				rel="stylesheet" type="text/css">
+			<link href="<spring:url value="/estilos/displaytag.css"/>"
+				rel="stylesheet" type="text/css">
 		<script src="<spring:url value="/scripts/jquery.min.js"/>"></script>
+		<script src="<spring:url value="/scripts/jquery-ui-1.8.14.custom.min.js"/>"></script>
+		<script type="text/javascript" src="<spring:url value="/scripts/horaActual.js"/>"></script>
+			
 		<script type="text/javascript">
 		$(document).ready(function(){
+			
+			//configuración para el calendario
+			jQuery(function($){
+		        $.datepicker.regional['es'] = {
+		            closeText: 'Cerrar',
+		            prevText: '&#x3c;Ant',
+		            nextText: 'Sig&#x3e;',
+		            currentText: 'Hoy',
+		            monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+		            'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+		            monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
+		            'Jul','Ago','Sep','Oct','Nov','Dic'],
+		            dayNames: ['Domingo','Lunes','Martes','Mi&eacute;rcoles','Jueves','Viernes','S&aacute;bado'],
+		            dayNamesShort: ['Dom','Lun','Mar','Mi&eacute;','Juv','Vie','S&aacute;b'],
+		            dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','S&aacute;'],
+		            weekHeader: 'Sm',
+		            dateFormat: 'dd/mm/yy',
+		            firstDay: 1,
+		            isRTL: false,
+		            showMonthAfterYear: false,
+		            showOn: "button",
+		            buttonImageOnly: true,
+		            buttonImage: '<spring:url value="/imagenes/boton_calendar.png"/>',
+		            yearSuffix: ''};
+		        $.datepicker.setDefaults($.datepicker.regional['es']);
+		    });
+			
+			$( "#datepicker" ).datepicker({
+				showButtonPanel: true
+			});
 			
 			$('table.displaytag tr').hover(function() {
 				$(this).addClass('hover');
@@ -27,7 +76,7 @@
 			$(".subirArchivo").each(function(){
 				$(this).css('cursor', 'pointer');
 				$(this).attr({
-					src : '<spring:url value="/imagenes/boton_update.png"/>',
+					src : '<spring:url value="/imagenes/boton_guardar.png"/>',
 					title : 'Guardar'
 				});
 				$(this).click(function() {
@@ -78,27 +127,47 @@
 					<table style="width: 90%; border: 2px solid grey; background-color: white; font-size: 12px; font-family: verdana" 
 							border="0" align="center" cellpadding="2" cellspacing="3">
 						<tr>
-							<th colspan="2" style="background-image: url('/Ciceron/imagenes/fondo_degradado_gris.png'); background-repeat: repeat-x;">Archivos</th>
+							<th colspan="2" style="background-image: url('/Ciceron/imagenes/fondo_degradado_gris.png'); background-repeat: repeat-x;">Archivo</th>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
 							<td valign="middle">
-								<table style="width: 100%; border: 2px solid grey; background-color: white; font-size: 12px; font-family: verdana" 
+								<table style="width: 100%; border: 2px solid grey; background-color: white; font-size: 11px; font-family: verdana;" 
 									border="0" align="center" cellpadding="2" cellspacing="3">
 									<tr>
 										<td align="center">
 											<form action="${context}/archivo/subir/${idESDocumento}" method="POST" enctype="multipart/form-data">
 												<input type="hidden" name="id" class="id"/>
-												<table>	
+												<table style="font-size:12px; font-family: verdana;">	
+													<tr>
+														<td>Descripción: </td>
+														<td colspan="3">
+															<input type="text" name="descripcion" size="68"/>
+														</td>
+													</tr>
+													<tr>
+														<td>Tipo: </td>
+														<td>
+															<input type="radio" name="tipo" class="tipo tipoE" value="E"/>Entrada
+															<input type="radio" name="tipo" class="tipo tipoS" value="S"/>Salida
+														</td>
+														<td>Fecha: </td>
+														<td>
+															<input type="text" id="datepicker" class="fecha" style="width: 135px;" name="fecha">
+														</td>
+													</tr>
+													<tr>
+														<td>&nbsp;</td>
+													</tr>
 													<tr>
 														<td>Nuevo documento:</td>
 														<td> 
 															<input type="file" name="file" id="file"/>
 														</td>
 														<td width="15px">&nbsp;</td>
-														<td>
+														<td align="right">
 															<img class="subirArchivo" >
 														</td>
 													</tr>				
@@ -111,7 +180,7 @@
 						</tr>
 						<tr align="center">
 							<td>
-								<display:table name="listaArchivos" uid="archivos" style="width: 70%;" 
+								<display:table name="listaArchivos" uid="archivos" style="width: 100%;" 
 								decorator="es.ise.ciceron.displaytag.decorators.ListaArchivosDecorator">
 									<display:column style="width: 34px;">
 										<c:choose>
@@ -147,10 +216,26 @@
 											</c:otherwise>
 										</c:choose>
 									</display:column>
-									<display:column property="nombre" title="Documento" style="width: 260px;"/>
+									<display:column property="nombre" title="Documento"/>
+									<display:column property="descripcion" title="Descripción Tarea"/>
+									<display:column property="fecha" title="Fecha" decorator="es.ise.ciceron.displaytag.decorators.ShortDateDecorator"/>
+									<display:column title="E" style="width: 16px; text-align: center;">
+										<c:choose>
+											<c:when test="${archivos.tipo == 'E'}">
+												<img src="<spring:url value="/imagenes/boton_tick.png"/>"/>
+											</c:when>
+										</c:choose>
+									</display:column>
+									<display:column title="S" style="width: 16px; text-align: center;">
+										<c:choose>
+											<c:when test="${archivos.tipo == 'S'}">
+												<img src="<spring:url value="/imagenes/boton_tick.png"/>"/>
+											</c:when>
+										</c:choose>
+									</display:column>
 									<display:column property="uCreacion" title="Creador" style="text-align: center;"/>
-									<display:column property="fCreacion" title="Fecha" decorator="es.ise.ciceron.displaytag.decorators.ShortDateDecorator"/>
-									<display:column class="acciones">
+									<display:column property="fCreacion" title="Fecha Creación" decorator="es.ise.ciceron.displaytag.decorators.ShortDateDecorator"/>
+									<display:column class="acciones" style="width: 16px; text-align: center;">
 										<img class="eliminarArchivo" id="borrarArchivo_${archivos.id}"/>
 									</display:column>
 								</display:table>
