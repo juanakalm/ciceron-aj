@@ -26,7 +26,7 @@
 				
 				$('#informes tbody tr button.observaciones, #informesMod tbody tr button.observaciones').click(function(){
 					var id = $(this).parents('tr').attr('id').split('_')[1];
-					window.open('<spring:url value = "/app/informes/observaciones/"/>'+id, 'incorporardocumentos', 'status=yes,scrollbars=no,width=700,height=400,top=150,left=270');
+					window.open('<spring:url value = "/app/informes/observaciones/"/>'+id, 'incorporardocumentos', 'status=yes,scrollbars=no,width=800,height=600,top=150,left=270');
 				});
 				
 				$('.volverMenu').each(function() {
@@ -123,7 +123,7 @@
 					<button style="width: 60px" class="informe">Informe</button>
 				</display:column>
 				<display:column class="acciones">
-					<button style="width: 90px" class="observaciones" id="${informes.idExpediente}">Observaciones</button>
+					<button style="width: 90px" class="observaciones" >Observaciones</button>
 				</display:column>
 				<display:caption style="color: purple">Informes Jurídicos Pendientes</display:caption>
 			</display:table>
@@ -143,7 +143,7 @@
 					<button style="width: 60px" class="informe">Informe</button>
 				</display:column>
 				<display:column class="acciones">
-					<button style="width: 90px">Observaciones</button>
+					<button style="width: 90px" class="observaciones">Observaciones</button>
 				</display:column>
 				<display:caption style="color: purple">Informes Jurídicos Pendientes Modificados</display:caption>
 			</display:table>
