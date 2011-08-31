@@ -75,6 +75,7 @@
 				});
 				$(this).click(function(){
 					$('input[type="text"]',$(this).parents('form')).val('');
+					$('textarea',$(this).parents('form')).val('');
 					$('select',$(this).parents('form')).val('');
 					$('input[type="radio"]').attr('checked',false);
 				});

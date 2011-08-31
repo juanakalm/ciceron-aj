@@ -47,6 +47,8 @@
 	
 	<mvc:interceptors>
 		<mvc:interceptor>
+		   <mvc:mapping path="/exp/**"/>
+		   <mvc:mapping path="/mod/**"/>
 		   <mvc:mapping path="/observaciones"/>
 		   <mvc:mapping path="/parametros"/>
 		   <mvc:mapping path="/listados"/>

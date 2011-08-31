@@ -3,13 +3,16 @@ package es.ise.ciceron.spring.controllers;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +29,13 @@ import es.ise.ciceron.spring.util.Fichero;
 @RequestMapping("/archivo")
 public class ArchivoController
 {
+	@InitBinder
+    public void initBinder(WebDataBinder binder)
+	{
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+    }
+	
 	@Autowired
 	private GenericDAO genericDAO;
 	

@@ -132,7 +132,7 @@
                <columnOverride column="ACC_FECHA_CADUCIDAD" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
         </table>
         
-         <table tableName="AJ_TEXTO_INFORME" domainObjectName="TextoInforme">
+        <table tableName="AJ_TEXTO_INFORME" domainObjectName="TextoInforme">
                <generatedKey column="TEI_ID" sqlStatement="SELECT AJ_TEXTO_INFORME_S1.nextval FROM DUAL" identity="false" type="pre"/>
                <columnRenamingRule searchString="^TEI_" replaceString="" />
         		<columnOverride column="TEI_P_ID" property="idPunto"/>
@@ -220,6 +220,7 @@
                enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
                enableInsert="false" enableUpdateByExample="false"
                enableUpdateByPrimaryKey="false">
+               <columnOverride column="EXP_ID" property="id"/>
         </table>
         
       	<table tableName="VERSIONES_PLIEGOS" domainObjectName="VersionesPliegos">
@@ -347,6 +348,94 @@
                <columnRenamingRule searchString="^AR_" replaceString="" />
                <columnOverride column="AR_ES_ID" property="idArchivo"/>
         </table>
+        
+        <table tableName="AJ_OBSERVACIONES" domainObjectName="Observaciones">
+               <generatedKey column="OB_ID" sqlStatement="SELECT CONTRATOS.AJ_OBSERVACIONES_S1.nextval FROM DUAL" identity="false" type="pre"/>
+               <columnRenamingRule searchString="^OB_" replaceString="" />
+        </table>
+        
+        <table tableName="CON_MODIFICADOS" domainObjectName="Modificados">
+        	   <generatedKey column="MOD_ID" sqlStatement="SELECT CON_MODIFICADOS_S1.nextval FROM DUAL" identity="false" type="pre"/>
+               <columnRenamingRule searchString="^MOD_" replaceString="" />
+               <ignoreColumn column="MOD_CON_ID"/>
+               <ignoreColumn column="MOD_IMPORTE_BASE"/>
+               <ignoreColumn column="MOD_IMPORTE_IVA"/>
+               <ignoreColumn column="MOD_IVA"/>
+               <ignoreColumn column="MOD_TT_ID"/>
+               <ignoreColumn column="MOD_F_AUTORIZA"/>
+               <ignoreColumn column="MOD_F_RECHAZO"/>
+               <ignoreColumn column="MOD_USU_VALIDA"/>
+               <ignoreColumn column="MOD_TMP_AG_ID"/>
+               <ignoreColumn column="MOD_DESCRIPCION"/>
+               <ignoreColumn column="MOD_F_SOLICITUD"/>
+               <ignoreColumn column="MOD_USU_COMENTARIO"/>
+               <ignoreColumn column="MOD_JUSTIFICACION"/>
+               <ignoreColumn column="MOD_USU_RESPUESTA"/>
+               <ignoreColumn column="MOD_F_VISADO_AJ"/>
+               <ignoreColumn column="MOD_URGENTE"/>
+               <ignoreColumn column="MOD_EST_ID"/>
+               <ignoreColumn column="MOD_IMP_SUP_BASE"/>
+               <ignoreColumn column="MOD_IMP_SUP_IVA"/>
+               <ignoreColumn column="MOD_SUP_IVA"/>
+               <ignoreColumn column="MOD_RESP_ID"/>
+               <ignoreColumn column="MOD_UC_ID"/>
+               <ignoreColumn column="MOD_N_AÑOS_PLAEJE"/>
+               <ignoreColumn column="MOD_N_MESES_PLAEJE"/>
+               <ignoreColumn column="MOD_N_DIAS_PLAEJE"/>
+               <ignoreColumn column="MOD_F_AUTORIZA_INICIAL"/>
+               <ignoreColumn column="MOD_F_RECHAZO_INICIAL"/>
+               <ignoreColumn column="MOD_F_SOLICITUD_INICIAL"/>
+               <ignoreColumn column="MOD_USU_VALIDA_INICIAL"/>
+               <ignoreColumn column="MOD_USU_COMENTARIO_INICIAL"/>
+               <ignoreColumn column="MOD_USU_RESPUESTA_INICIAL"/>
+               <ignoreColumn column="MOD_F_INFDIRFAC"/>
+               <ignoreColumn column="MOD_OBRAS"/>
+               <ignoreColumn column="MOD_DFRP_ID"/>
+               <ignoreColumn column="MOD_INF_AJ"/>
+        </table>
+        
+        <table tableName="DESCRIPCIONES" domainObjectName="Descripciones">
+        	   <generatedKey column="D_ID" sqlStatement="SELECT CONTRATOS.DESCRIPCIONES_S1.nextval FROM DUAL" identity="false" type="pre"/>
+        	   <columnRenamingRule searchString="^D_" replaceString="" />
+        	   <columnOverride column="D_ID" property="idDescripcion"/>
+        	   <columnOverride column="D_EXP_ID" property="id"/>
+        	   <ignoreColumn column="D_U_CREACION"/>
+        	   <ignoreColumn column="D_F_CREACION"/>
+        	   <ignoreColumn column="D_JUSTIFICACION"/>
+        	   <ignoreColumn column="D_MODIFICACION_PCAP"/>
+        	   <ignoreColumn column="D_CIRCUNSTANCIA"/>
+        	   <ignoreColumn column="D_CONDICION_EJECUCION"/>
+        	   <ignoreColumn column="D_COMENTARIO"/>
+        	   <ignoreColumn column="D_AUTORIZA"/>
+        	   <ignoreColumn column="D_CLASIFICACION"/>
+        	   <ignoreColumn column="D_AJ"/>
+        	   <ignoreColumn column="D_JUSTIFICACION_AI"/>
+        	   <ignoreColumn column="D_JUSTIFICACION_PROC"/>
+        	   <ignoreColumn column="D_RESPUESTA"/>
+        	   <ignoreColumn column="D_JUSTIFICACION2"/>
+        	   <ignoreColumn column="D_JUSTIFICACION3"/>
+        	   <ignoreColumn column="D_PROPUESTA_UNIDAD_GESTORA"/>
+        	   <ignoreColumn column="D_COMENTARIO_EQUIP"/>
+        	   <ignoreColumn column="D_FECHA_EQUIP"/>
+        	   <ignoreColumn column="D_JUSTIFICACION_LOTES"/>
+        	   <ignoreColumn column="D_OBSERVACIONES"/>
+        	   <ignoreColumn column="D_NECESIDADES"/>
+        	   <ignoreColumn column="D_COMENTARIO_SERV"/>
+        	   <ignoreColumn column="D_FECHA_SERV"/>
+        	   <ignoreColumn column="D_PARNOTIF1"/>
+        	   <ignoreColumn column="D_PARNOTIF2"/>
+        </table>
+        
+         <table tableName="AJ_CORREOS_V" domainObjectName="Correo"
+               enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+               enableInsert="false" enableUpdateByExample="false"
+               enableUpdateByPrimaryKey="false">
+               <columnOverride column="FIR_UC_ID" property="idUnidadFirmante"/>
+               <columnOverride column="US_DNI" property="dni"/>
+               <columnOverride column="US_NOMBRE" property="nombre"/>
+               <columnOverride column="US_IDENTIFICADOR" property="identificador"/>
+        </table>
+        
         
 	</context>
 </generatorConfiguration>

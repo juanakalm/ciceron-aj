@@ -9,6 +9,6 @@ public class ListaInformesModificadosDecorator extends TableDecorator
 	@Override
 	public String addRowId()
 	{
-		return String.format("informe_%s", ((InformeJuridicoModificado)getCurrentRowObject()).getIdExpediente());
+		return String.format("informe_%s", ((InformeJuridicoModificado)getCurrentRowObject()).getIdModificado());
 	}
 }

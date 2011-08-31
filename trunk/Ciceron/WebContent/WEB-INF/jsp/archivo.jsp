@@ -33,40 +33,42 @@
 		<script src="<spring:url value="/scripts/jquery.min.js"/>"></script>
 		<script src="<spring:url value="/scripts/jquery-ui-1.8.14.custom.min.js"/>"></script>
 		<script type="text/javascript" src="<spring:url value="/scripts/horaActual.js"/>"></script>
-			
+		
 		<script type="text/javascript">
-		$(document).ready(function(){
+		
 			
 			//configuración para el calendario
-			jQuery(function($){
-		        $.datepicker.regional['es'] = {
-		            closeText: 'Cerrar',
-		            prevText: '&#x3c;Ant',
-		            nextText: 'Sig&#x3e;',
-		            currentText: 'Hoy',
-		            monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
-		            'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-		            monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
-		            'Jul','Ago','Sep','Oct','Nov','Dic'],
-		            dayNames: ['Domingo','Lunes','Martes','Mi&eacute;rcoles','Jueves','Viernes','S&aacute;bado'],
-		            dayNamesShort: ['Dom','Lun','Mar','Mi&eacute;','Juv','Vie','S&aacute;b'],
-		            dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','S&aacute;'],
-		            weekHeader: 'Sm',
-		            dateFormat: 'dd/mm/yy',
-		            firstDay: 1,
-		            isRTL: false,
-		            showMonthAfterYear: false,
-		            showOn: "button",
-		            buttonImageOnly: true,
-		            buttonImage: '<spring:url value="/imagenes/boton_calendar.png"/>',
-		            yearSuffix: ''};
-		        $.datepicker.setDefaults($.datepicker.regional['es']);
-		    });
+		jQuery(function($){
+	        $.datepicker.regional['es'] = {
+	            closeText: 'Cerrar',
+	            prevText: '&#x3c;Ant',
+	            nextText: 'Sig&#x3e;',
+	            currentText: 'Hoy',
+	            monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+	            'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+	            monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun',
+	            'Jul','Ago','Sep','Oct','Nov','Dic'],
+	            dayNames: ['Domingo','Lunes','Martes','Mi&eacute;rcoles','Jueves','Viernes','S&aacute;bado'],
+	            dayNamesShort: ['Dom','Lun','Mar','Mi&eacute;','Juv','Vie','S&aacute;b'],
+	            dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','S&aacute;'],
+	            weekHeader: 'Sm',
+	            dateFormat: 'dd/mm/yy',
+	            firstDay: 1,
+	            isRTL: false,
+	            showMonthAfterYear: false,
+	            showOn: "button",
+	            buttonImageOnly: true,
+	            buttonImage: '<spring:url value="/imagenes/boton_calendar.png"/>',
+	            yearSuffix: ''};
+	        $.datepicker.setDefaults($.datepicker.regional['es']);
+	    });
+			
+		$(document).ready(function(){
 			
 			$( "#datepicker" ).datepicker({
 				showButtonPanel: true
 			});
-			
+
 			$('table.displaytag tr').hover(function() {
 				$(this).addClass('hover');
 			}, function() {
@@ -80,7 +82,13 @@
 					title : 'Guardar'
 				});
 				$(this).click(function() {
-					$(this).parents('form').submit();
+					if($("#descripcion").val()!= ""){
+						if($("#file").val()!= ""){
+							$(this).parents('form').submit();
+						}else
+							alert("Seleccione un documento");
+					}else
+						alert("El campo descripción no puede estar vacio");
 				});
 			});
 			
@@ -144,7 +152,7 @@
 													<tr>
 														<td>Descripción: </td>
 														<td colspan="3">
-															<input type="text" name="descripcion" size="68"/>
+															<input type="text" name="descripcion" size="68" id="descripcion"/>
 														</td>
 													</tr>
 													<tr>

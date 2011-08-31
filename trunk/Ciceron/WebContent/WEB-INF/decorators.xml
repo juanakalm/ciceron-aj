@@ -10,6 +10,8 @@
 		<pattern>/app/documentos/busquedaEntidad/*</pattern>
 		<pattern>/app/documentos/busquedaContrato/*</pattern>
 		<pattern>/app/archivo/*</pattern>
+		<pattern>/app/informes/exp/*</pattern>
+		<pattern>/app/informes/mod/*</pattern>
 	</excludes>
 	<decorator name="default" page="default.jsp">
 		<pattern>/*</pattern>
