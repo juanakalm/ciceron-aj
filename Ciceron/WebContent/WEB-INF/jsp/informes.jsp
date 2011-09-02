@@ -18,13 +18,29 @@
 					window.open(url,'exp'+id,'toolbar=0,location=0,directories=0,status=1,menubar=1,scrollbars=1,resizable=1,top=5,left=0,width='+(screen.width-10)+',height='+(screen.height-120));
 				});
 				
-				$('#informes tbody tr button.informe, #informesMod tbody tr button.informe').click(function(event) {
+				$('.informe').each(function(){
+					$(this).css('cursor', 'pointer');
+					$(this).attr({
+						src : '<spring:url value="/imagenes/boton_informe.png"/>',
+						title : 'Informe'
+					});
+				});
+				
+				$('#informes tbody tr img.informe, #informesMod tbody tr img.informe').click(function(event) {
 					var id = $(this).parents('tr').attr('id').split('_')[1];
  					var url = '<spring:url value="/app/informes/elaborarInforme/"/>'+id;
 					location.href = url;
 				});
 				
-				$('#informes tbody tr button.observaciones, #informesMod tbody tr button.observaciones').click(function(){
+				$('.observaciones').each(function(){
+					$(this).css('cursor', 'pointer');
+					$(this).attr({
+						src : '<spring:url value="/imagenes/boton_observaciones.png"/>',
+						title : 'Observaciones'
+					});
+				});
+				
+				$('#informes tbody tr img.observaciones, #informesMod tbody tr img.observaciones').click(function(){
 					var id = $(this).parents('tr').attr('id').split('_')[1];
 					window.open('<spring:url value = "/app/informes/observaciones/"/>'+id, 'incorporardocumentos', 'status=yes,scrollbars=no,width=800,height=600,top=150,left=270');
 				});
@@ -120,10 +136,12 @@
 				<display:column property="version" title="Versión" sortable="true"/>
 				<display:column property="fPeticion" title="Fecha Petición" sortable="true" decorator="es.ise.ciceron.displaytag.decorators.ShortDateDecorator"/>
 				<display:column class="acciones" >
-					<button style="width: 60px" class="informe">Informe</button>
+					<img class="informe"/>
+<!-- 					<button style="width: 60px" class="informe">Informe</button> -->
 				</display:column>
 				<display:column class="acciones">
-					<button style="width: 90px" class="observaciones" >Observaciones</button>
+					<img class="observaciones"/>
+<!-- 					<button style="width: 90px" class="observaciones" >Observaciones</button> -->
 				</display:column>
 				<display:caption style="color: purple">Informes Jurídicos Pendientes</display:caption>
 			</display:table>
@@ -140,10 +158,12 @@
 				<display:column property="proveedor" title="Proveedor" sortable="true"/>
 				<display:column property="fPeticion" title="Fecha Petición" sortable="true" decorator="es.ise.ciceron.displaytag.decorators.ShortDateDecorator"/>
 				<display:column class="acciones">
-					<button style="width: 60px" class="informe">Informe</button>
+					<img class="informe"/>
+<!-- 					<button style="width: 60px" class="informe">Informe</button> -->
 				</display:column>
 				<display:column class="acciones">
-					<button style="width: 90px" class="observaciones">Observaciones</button>
+					<img class="observaciones"/>
+<!-- 					<button style="width: 90px" class="observaciones">Observaciones</button> -->
 				</display:column>
 				<display:caption style="color: purple">Informes Jurídicos Pendientes Modificados</display:caption>
 			</display:table>

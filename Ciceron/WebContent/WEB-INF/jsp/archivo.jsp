@@ -65,6 +65,29 @@
 			
 		$(document).ready(function(){
 			
+			//Flechas del displaytag
+			$('.primero').each(function () {
+	    		this.title='Ir a la primera página';
+	    		this.alt=this.title;
+	    		this.src='<spring:url value="/imagenes/boton_primero.gif"/>';
+	    	});
+	    	$('.anterior').each(function () {
+	            this.title='Ir a la página anterior';
+	            this.alt=this.title;
+	            this.src='<spring:url value="/imagenes/boton_anterior.gif"/>';
+	        });
+	    	$('.siguiente').each(function () {
+	            this.title='Ir a la página siguiente';
+	            this.alt=this.title;
+	            this.src='<spring:url value="/imagenes/boton_siguiente.gif"/>';
+	        });
+	    	$('.ultimo').each(function () {
+	            this.title='Ir a la última página';
+	            this.alt=this.title;
+	            this.src='<spring:url value="/imagenes/boton_ultimo.gif"/>';
+	        });
+	    	
+			
 			$( "#datepicker" ).datepicker({
 				showButtonPanel: true
 			});
@@ -152,7 +175,7 @@
 													<tr>
 														<td>Descripción: </td>
 														<td colspan="3">
-															<input type="text" name="descripcion" size="68" id="descripcion"/>
+															<input type="text" name="descripcion" size="70" id="descripcion"/>
 														</td>
 													</tr>
 													<tr>
@@ -188,7 +211,7 @@
 						</tr>
 						<tr align="center">
 							<td>
-								<display:table name="listaArchivos" uid="archivos" style="width: 100%;" 
+								<display:table name="listaArchivos" uid="archivos" style="width: 100%;" pagesize="5" requestURI="${context}/archivo/${idESDocumento}"
 								decorator="es.ise.ciceron.displaytag.decorators.ListaArchivosDecorator">
 									<display:column style="width: 34px;">
 										<c:choose>

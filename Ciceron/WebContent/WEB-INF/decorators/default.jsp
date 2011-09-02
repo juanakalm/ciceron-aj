@@ -201,9 +201,9 @@
 				<td >&nbsp;</td>
 			</tr>
 			<tr>
-				<td style="width: 630px">&nbsp;</td>
+				<td style="width: 615px">&nbsp;</td>
 				<td>
-					<table style="border: white 2px solid; font-size: 11px; width: 200px; " align="left">
+					<table style="font-size: 11px; width: 235px; " align="left">
 						<tr>
 							<td style="padding-left: 5px;">
 								<c:out value="${sessionScope.usuario.nombre}"/>
