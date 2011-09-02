@@ -22,7 +22,7 @@ th{
 }
 
 .cabecera{
-	background-image: url('/Ciceron/imagenes/cabecera.gif');
+	background-image: url('/Ciceron/imagenes/encabezado2.png');
 	background-repeat: no-repeat;
 	height: 150px;	
 }
@@ -31,7 +31,7 @@ th{
 	width: 400px; 
 	border: 1px solid;
 	border-color: #c50101;
-	background-image: url('/Ciceron/imagenes/degradadoOcre.gif');
+	background-image: url('/Ciceron/imagenes/degradado_ocre.png');
 	background-repeat: repeat-x;	
 	border-collapse: collapse;
 }
