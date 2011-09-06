@@ -95,7 +95,7 @@
 							<c:forEach var="parametro" items="${listaParametros}">
 								<tr>
 									<c:if test="${parametro.visto == 'S'}">
-										<td width="25%">${parametro.nombre}</td>	
+										<td width="25%" align="center">${parametro.nombre}</td>	
 										<td>
 											<c:if test="${parametro.lEntidad == 'N'}">
 												<c:if test="${parametro.lExpediente == 'N'}">

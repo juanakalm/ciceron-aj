@@ -61,7 +61,7 @@
 					</c:when>
 				</c:choose>
 			</display:column>	
-			<display:column title="excel" style="width: 28px; text-align: center;" >
+			<display:column title="excel" style="width: 28px; text-align: center;">
 				<c:choose>
 					<c:when test="${solicitudes.tipo == 2}">	
 						<img class="excel" id="excel_${solicitudes.id}"/>

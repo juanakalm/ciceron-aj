@@ -370,7 +370,7 @@
 							<tr>
 								<td>Contrato: </td>
 								<td colspan="5">
-									<input type="text" id="contrato" name="contrato" size="111" />
+									<input type="text" id="contrato" name="contrato" size="111" readonly="readonly"/>
 									<img class="buscarContrato"/>
 									<img class="limpiarFila"/>
 								</td>
@@ -378,7 +378,7 @@
 							<tr>
 								<td>Proveedor: </td>
 								<td colspan="5">
-									<input type="text" id="proveedor" name="proveedor" size="111"/>
+									<input type="text" id="proveedor" name="proveedor" size="111" readonly="readonly"/>
 									<img class="buscarEntidad"/>
 									<img class="limpiarFila"/>
 								</td>

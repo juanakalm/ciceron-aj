@@ -82,6 +82,7 @@ public class PliegosController {
 		if(pliego.getId() == null){
 			pliego.setCreacion(new Date(), usuario);
 		}else{
+			pliego.copyCreacion(genericDAO.get(VersionesPliegos.class, pliego.getId()));
 			pliego.setActualizacion(new Date(), usuario);
 		}
 		
