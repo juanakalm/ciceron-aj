@@ -216,6 +216,7 @@ public class DocumentosController {
 		operacion.setActualizacion(new Date(), usuario);
 		
 		if(documento.getId() != null){
+			documento.copyCreacion(genericDAO.get(ESDocumento.class, documento.getId()));
 			documento.setActualizacion(new Date(), usuario);
 		}else
 			documento.setCreacion(new Date(), usuario);
