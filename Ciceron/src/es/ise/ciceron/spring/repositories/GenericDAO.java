@@ -466,6 +466,38 @@ public class GenericDAO
 		}
 	}
 	
+	public <T> void update(Class<T> daoClass, T dao)
+	{
+		String daoName = daoClass.getSimpleName().replaceAll("Command","");
+		CiceronMapper mapper = mappers.get(daoName);
+		try
+		{
+			mapper.getClass().getMethod("updateByPrimaryKeySelective", daoClass).invoke(mapper, dao);
+		} 
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public <T> void updateWithBlob(Class<T> daoClass, T dao)
+	{
+		String daoName = daoClass.getSimpleName().replaceAll("Command","");
+		CiceronMapper mapper = mappers.get(daoName);
+		try
+		{
+			BigDecimal id = (BigDecimal)dao.getClass().getMethod("getId").invoke(dao);
+			Object example = Class.forName(String.format("es.ise.ciceron.model.%sExample", daoName)).newInstance();
+			Object criteria = example.getClass().getMethod("or").invoke(example);
+			criteria.getClass().getMethod("andIdIsEqualTo", BigDecimal.class).invoke(criteria, id);			
+			mapper.getClass().getMethod("updateByExampleWithBLOBs", daoClass, example.getClass()).invoke(mapper, dao, example);
+		} 
+		catch (Exception e)
+		{
+			throw new RuntimeException(e);
+		}
+	}
+	
 	public interface NumericExpression<T>
 	{
 		public BigDecimal evaluate(T object);
