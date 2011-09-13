@@ -43,6 +43,7 @@
 					$('.limpiarTabla').click();
 					$('#tabla_elaborar_pliego th').text('Nuevo');
 					$('#tabla_elaborar_pliego #fichero').show();
+					$('#tabla_elaborar_pliego #doc').show();
 					$('.tabla_busqueda').show();
 					$('#tabla_elaborar_pliego .nombre').focus();
 					$('#sustituirPliego').hide();
@@ -151,6 +152,7 @@
 				});
 				$('#tabla_elaborar_pliego th').text('Editar pliego');
 				$('#tabla_elaborar_pliego #fichero').hide();
+				$('#tabla_elaborar_pliego #doc').hide();
 				$('#tabla_elaborar_pliego').show();
 				$('#sustituirPliego').hide();
 			});
@@ -177,31 +179,23 @@
 						return false;
 					}
 					
-					if($("#fichero").is(':visible') && $("#fichero").val()==""){
-						alert("Debe de seleccionar un Documento");
-						return false;
+					if($("#fichero").is(':visible')) {
+						alert($("#fichero").val());
+						if($("#fichero").val() == "") {
+							alert("Debe de seleccionar un Documento");
+							return false;
+						}
+						
+						if(!(/\.pdf$/.test($("#fichero").val()) || (/\.PDF$/.test($("#fichero").val())))){
+							alert("El documento debe ser pdf"); 
+							return false;
+						}
 					}
 					
 					$('#tabla_elaborar_pliego :disabled').attr("disabled",false);
 					$(this).parents('form').submit();
 					
-					/*
-					if($(".nombre").val()!="" ){
-						if($(".version").val()!=""){
-							if(/^\d*\.?\d+$/.test($(".version").val())){
-								if($("#fichero").is(':visible') && $("#fichero").val()!= ""){
-									$(this).parents('form').submit();
-									$('#tabla_elaborar_pliego #fichero').show();
-									$('#tabla_elaborar_pliego :disabled').attr("disabled",false);
-								}else
-									alert("Debe de seleccionar un Documento");
-							}else
-								alert("El campo 'Versión' debe ser numérico");
-						}else
-							alert("El campo Versión no puede estar vacio");
-					} else 
-						alert("El campo Nombre no pueden estar vacio");
-				  */
+					
 				  });
 			});
 			
@@ -297,7 +291,9 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="80px"><span id="fichero">Documento:</span></td>
+							<td width="80px">
+								<span  id="doc">Documento: </span>
+							</td>
 							<td width="150px">
                                 <input type="file" name="file" id="fichero"/>
                             </td>
