@@ -58,6 +58,7 @@
            <mvc:mapping path="/documentos"/>
            <mvc:mapping path="/tipologia"/>
            <mvc:mapping path="/archivo"/>
+           <mvc:mapping path="/perfiles"/>
            <bean class="es.ise.ciceron.spring.interceptors.SessionExpiredInterceptor"/>
        </mvc:interceptor>
 	</mvc:interceptors>

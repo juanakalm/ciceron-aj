@@ -6,9 +6,9 @@ a img {
 	border: 0px;	
 }
 
-body{
+html body{
 	font-family: Arial;
-
+	height: 100%;
 }
 
 th{
@@ -19,6 +19,13 @@ th{
 	width: 1000px;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+#wrapper {
+min-height: 100%;
+height: auto !important;
+height: 100%;
+margin: 0 auto -4em;
 }
 
 .cabecera{
@@ -130,7 +137,10 @@ th{
 	border-right-width-value:0;
 	border-top-style:none;
 	border-top-width:0;
-	height:auto;
+/* 	height:auto; */
+	
+/* 	prueba */
+	heigth: 4em;
 	
 }
 
