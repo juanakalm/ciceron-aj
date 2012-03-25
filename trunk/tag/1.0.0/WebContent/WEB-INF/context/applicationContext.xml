@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+      ">
+
+	<bean id="appProperties"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="location">
+			<bean class="java.lang.String" factory-method="format">
+				<constructor-arg>
+					<value>/WEB-INF/config/config_%s.properties</value>
+				</constructor-arg>
+				<constructor-arg>
+					<bean class="java.lang.System" factory-method="getProperty">
+						<constructor-arg>
+							<value>app.env</value>
+						</constructor-arg>
+						<constructor-arg>
+							<value>desarrollo</value>
+						</constructor-arg>
+					</bean>
+				</constructor-arg>
+			</bean>
+		</property>
+	</bean>
+
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties">
+			<ref bean="appProperties" />
+		</property>
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+	</bean>
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${jdbc.main.driver}" />
+		<property name="jdbcUrl" value="${jdbc.main.url}" />
+		<property name="user" value="${jdbc.main.user}" />
+		<property name="password" value="${jdbc.main.pass}" />
+		<property name="acquireIncrement" value="3" />
+		<property name="minPoolSize" value="4" />
+		<property name="maxPoolSize" value="32" />
+		<property name="acquireRetryAttempts" value="10" />
+		<property name="maxIdleTime" value="50" />
+		<property name="idleConnectionTestPeriod" value="30" />
+		<!-- <property name="autoCommitOnClose" value="false" /> -->
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="mapperScanner"
+		class="org.mybatis.spring.annotation.MapperScannerPostProcessor">
+		<property name="basePackage" value="es.ise.ciceron.mapper" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	   <property name="host" value="${mail.smtp.server}"/>
+	   <property name="port" value="${mail.smtp.port}"/>
+	   <property name="defaultEncoding" value="${mail.charset}"/>
+	</bean>
+	
+</beans>
