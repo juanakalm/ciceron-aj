@@ -180,7 +180,6 @@
 					}
 					
 					if($("#fichero").is(':visible')) {
-						alert($("#fichero").val());
 						if($("#fichero").val() == "") {
 							alert("Debe de seleccionar un Documento");
 							return false;

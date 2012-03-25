@@ -191,50 +191,50 @@
 </head>
 <body leftmargin="0" topmargin="0" rightmargin="0" bottommargin="0">
 <center>
-	<div class="contenedor">
-	<div class="cabecera" >
-		<table width="1000px" height="150px">
-			<tr>
-				<td >&nbsp;</td>
-			</tr>
-			<tr>
-				<td >&nbsp;</td>
-			</tr>
-			<tr>
-				<td style="width: 615px">&nbsp;</td>
-				<td>
-					<table style="font-size: 11px; width: 235px; " align="left">
-						<tr>
-							<td style="padding-left: 5px;">
-								<c:out value="${sessionScope.usuario.nombre}"/>
-							</td>
-							<td align="right" > 
-								<img class="salir"/>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2" style="padding-left: 5px;">
-								<script	type="text/javascript">
-									MostrarFechaActual();
-								</script>
-							</td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-		</table>
+	<div class="contenedor" id="wrapper">
+		<div class="cabecera" >
+			<table width="1000px" height="150px">
+				<tr>
+					<td >&nbsp;</td>
+				</tr>
+				<tr>
+					<td >&nbsp;</td>
+				</tr>
+				<tr>
+					<td style="width: 615px">&nbsp;</td>
+					<td>
+						<table style="font-size: 11px; width: 235px; " align="left">
+							<tr>
+								<td style="padding-left: 5px;">
+									<c:out value="${sessionScope.usuario.nombre}"/>
+								</td>
+								<td align="right" > 
+									<img class="salir"/>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2" style="padding-left: 5px;">
+									<script	type="text/javascript">
+										MostrarFechaActual();
+									</script>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<br/>
+		<div class="wrapper">
+			<decorator:body />
+		</div>
+		<br/>
 	</div>
-	<br/>
-	<div>
-	<decorator:body />
-	</div>
-	<br/>
 	<div class="pie" align="center">
 		<div class="piedatos">
 			C/ Judería 1. Edificio Vega del Rey 1<br> 
 			41900 - Camas -	Sevilla | Tlf.: 955 625 600
 		</div>
-	</div>
 	</div>
 	</center>
 </body>

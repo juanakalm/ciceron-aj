@@ -15,7 +15,7 @@
 	</head>
 	<body>
 		<br>
-			<table height="470px">
+			<table>
 				<tr>
 					<td valign="top">
 						<table id="tablaMenus">

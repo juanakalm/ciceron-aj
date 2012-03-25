@@ -433,7 +433,9 @@ public class InformesController
 		} else
 		{
 			Descripciones descripcion = genericDAO.select(Descripciones.class, "id", idExpediente);
-			des.setIdDescripcion(descripcion.getIdDescripcion());
+			if(descripcion != null){
+				des.setIdDescripcion(descripcion.getIdDescripcion());
+			}
 			des.setActualizacion(new Date(), usuario);
 			genericDAO.insertOrUpdate(Descripciones.class, des);
 		}
